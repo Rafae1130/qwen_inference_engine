@@ -1,0 +1,2658 @@
+Tensor: model.embed_tokens.weight
+  layer: -1
+  short_name: embed_tokens.weight
+  shape: [ 151936 5120 ]
+  offsets: [ 0, 1555824640 ]
+
+Tensor: model.layers.0.input_layernorm.weight
+  layer: 0
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 1555824640, 1555834880 ]
+
+Tensor: model.layers.0.mlp.down_proj.weight
+  layer: 0
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 1555834880, 1734092800 ]
+
+Tensor: model.layers.0.mlp.gate_proj.weight
+  layer: 0
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 1734092800, 1912350720 ]
+
+Tensor: model.layers.0.mlp.up_proj.weight
+  layer: 0
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 1912350720, 2090608640 ]
+
+Tensor: model.layers.0.post_attention_layernorm.weight
+  layer: 0
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 2090608640, 2090618880 ]
+
+Tensor: model.layers.0.self_attn.k_norm.weight
+  layer: 0
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 2090618880, 2090619136 ]
+
+Tensor: model.layers.0.self_attn.k_proj.weight
+  layer: 0
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 2090619136, 2101104896 ]
+
+Tensor: model.layers.0.self_attn.o_proj.weight
+  layer: 0
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 2101104896, 2153533696 ]
+
+Tensor: model.layers.0.self_attn.q_norm.weight
+  layer: 0
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 2153533696, 2153533952 ]
+
+Tensor: model.layers.0.self_attn.q_proj.weight
+  layer: 0
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 2153533952, 2205962752 ]
+
+Tensor: model.layers.0.self_attn.v_proj.weight
+  layer: 0
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 2205962752, 2216448512 ]
+
+Tensor: model.layers.1.input_layernorm.weight
+  layer: 1
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 2216448512, 2216458752 ]
+
+Tensor: model.layers.1.mlp.down_proj.weight
+  layer: 1
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 2216458752, 2394716672 ]
+
+Tensor: model.layers.1.mlp.gate_proj.weight
+  layer: 1
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 2394716672, 2572974592 ]
+
+Tensor: model.layers.1.mlp.up_proj.weight
+  layer: 1
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 2572974592, 2751232512 ]
+
+Tensor: model.layers.1.post_attention_layernorm.weight
+  layer: 1
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 2751232512, 2751242752 ]
+
+Tensor: model.layers.1.self_attn.k_norm.weight
+  layer: 1
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 2751242752, 2751243008 ]
+
+Tensor: model.layers.1.self_attn.k_proj.weight
+  layer: 1
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 2751243008, 2761728768 ]
+
+Tensor: model.layers.1.self_attn.o_proj.weight
+  layer: 1
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 2761728768, 2814157568 ]
+
+Tensor: model.layers.1.self_attn.q_norm.weight
+  layer: 1
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 2814157568, 2814157824 ]
+
+Tensor: model.layers.1.self_attn.q_proj.weight
+  layer: 1
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 2814157824, 2866586624 ]
+
+Tensor: model.layers.1.self_attn.v_proj.weight
+  layer: 1
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 2866586624, 2877072384 ]
+
+Tensor: model.layers.2.input_layernorm.weight
+  layer: 2
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 2877072384, 2877082624 ]
+
+Tensor: model.layers.2.mlp.down_proj.weight
+  layer: 2
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 2877082624, 3055340544 ]
+
+Tensor: model.layers.2.mlp.gate_proj.weight
+  layer: 2
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 3055340544, 3233598464 ]
+
+Tensor: model.layers.2.mlp.up_proj.weight
+  layer: 2
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 3233598464, 3411856384 ]
+
+Tensor: model.layers.2.post_attention_layernorm.weight
+  layer: 2
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 3411856384, 3411866624 ]
+
+Tensor: model.layers.2.self_attn.k_norm.weight
+  layer: 2
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 3411866624, 3411866880 ]
+
+Tensor: model.layers.2.self_attn.k_proj.weight
+  layer: 2
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 3411866880, 3422352640 ]
+
+Tensor: model.layers.2.self_attn.o_proj.weight
+  layer: 2
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 3422352640, 3474781440 ]
+
+Tensor: model.layers.2.self_attn.q_norm.weight
+  layer: 2
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 3474781440, 3474781696 ]
+
+Tensor: model.layers.2.self_attn.q_proj.weight
+  layer: 2
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 3474781696, 3527210496 ]
+
+Tensor: model.layers.2.self_attn.v_proj.weight
+  layer: 2
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 3527210496, 3537696256 ]
+
+Tensor: model.layers.3.mlp.gate_proj.weight
+  layer: 3
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 3537696256, 3715954176 ]
+
+Tensor: model.layers.3.self_attn.k_norm.weight
+  layer: 3
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 3715954176, 3715954432 ]
+
+Tensor: model.layers.3.self_attn.k_proj.weight
+  layer: 3
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 3715954432, 3726440192 ]
+
+Tensor: model.layers.3.self_attn.o_proj.weight
+  layer: 3
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 3726440192, 3778868992 ]
+
+Tensor: model.layers.3.self_attn.q_norm.weight
+  layer: 3
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 3778868992, 3778869248 ]
+
+Tensor: model.layers.3.self_attn.q_proj.weight
+  layer: 3
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 3778869248, 3831298048 ]
+
+Tensor: model.layers.3.self_attn.v_proj.weight
+  layer: 3
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 3831298048, 3841783808 ]
+
+Tensor: model.layers.3.input_layernorm.weight
+  layer: 3
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 3841783808, 3841794048 ]
+
+Tensor: model.layers.3.mlp.down_proj.weight
+  layer: 3
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 3841794048, 4020051968 ]
+
+Tensor: model.layers.3.mlp.up_proj.weight
+  layer: 3
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 4020051968, 4198309888 ]
+
+Tensor: model.layers.3.post_attention_layernorm.weight
+  layer: 3
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 4198309888, 4198320128 ]
+
+Tensor: model.layers.4.input_layernorm.weight
+  layer: 4
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 4198320128, 4198330368 ]
+
+Tensor: model.layers.4.mlp.down_proj.weight
+  layer: 4
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 4198330368, 4376588288 ]
+
+Tensor: model.layers.4.mlp.gate_proj.weight
+  layer: 4
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 4376588288, 4554846208 ]
+
+Tensor: model.layers.4.mlp.up_proj.weight
+  layer: 4
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 4554846208, 4733104128 ]
+
+Tensor: model.layers.4.post_attention_layernorm.weight
+  layer: 4
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 4733104128, 4733114368 ]
+
+Tensor: model.layers.4.self_attn.k_norm.weight
+  layer: 4
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 4733114368, 4733114624 ]
+
+Tensor: model.layers.4.self_attn.k_proj.weight
+  layer: 4
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 4733114624, 4743600384 ]
+
+Tensor: model.layers.4.self_attn.o_proj.weight
+  layer: 4
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 4743600384, 4796029184 ]
+
+Tensor: model.layers.4.self_attn.q_norm.weight
+  layer: 4
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 4796029184, 4796029440 ]
+
+Tensor: model.layers.4.self_attn.q_proj.weight
+  layer: 4
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 4796029440, 4848458240 ]
+
+Tensor: model.layers.4.self_attn.v_proj.weight
+  layer: 4
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 4848458240, 4858944000 ]
+
+Tensor: model.layers.5.input_layernorm.weight
+  layer: 5
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 4858944000, 4858954240 ]
+
+Tensor: model.layers.5.mlp.down_proj.weight
+  layer: 5
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 4858954240, 5037212160 ]
+
+Tensor: model.layers.5.mlp.gate_proj.weight
+  layer: 5
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 5037212160, 5215470080 ]
+
+Tensor: model.layers.5.mlp.up_proj.weight
+  layer: 5
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 5215470080, 5393728000 ]
+
+Tensor: model.layers.5.post_attention_layernorm.weight
+  layer: 5
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 5393728000, 5393738240 ]
+
+Tensor: model.layers.5.self_attn.k_norm.weight
+  layer: 5
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 5393738240, 5393738496 ]
+
+Tensor: model.layers.5.self_attn.k_proj.weight
+  layer: 5
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 5393738496, 5404224256 ]
+
+Tensor: model.layers.5.self_attn.o_proj.weight
+  layer: 5
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 5404224256, 5456653056 ]
+
+Tensor: model.layers.5.self_attn.q_norm.weight
+  layer: 5
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 5456653056, 5456653312 ]
+
+Tensor: model.layers.5.self_attn.q_proj.weight
+  layer: 5
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 5456653312, 5509082112 ]
+
+Tensor: model.layers.5.self_attn.v_proj.weight
+  layer: 5
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 5509082112, 5519567872 ]
+
+Tensor: model.layers.6.input_layernorm.weight
+  layer: 6
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 5519567872, 5519578112 ]
+
+Tensor: model.layers.6.mlp.down_proj.weight
+  layer: 6
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 5519578112, 5697836032 ]
+
+Tensor: model.layers.6.mlp.gate_proj.weight
+  layer: 6
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 5697836032, 5876093952 ]
+
+Tensor: model.layers.6.mlp.up_proj.weight
+  layer: 6
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 5876093952, 6054351872 ]
+
+Tensor: model.layers.6.post_attention_layernorm.weight
+  layer: 6
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 6054351872, 6054362112 ]
+
+Tensor: model.layers.6.self_attn.k_norm.weight
+  layer: 6
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 6054362112, 6054362368 ]
+
+Tensor: model.layers.6.self_attn.k_proj.weight
+  layer: 6
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 6054362368, 6064848128 ]
+
+Tensor: model.layers.6.self_attn.o_proj.weight
+  layer: 6
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 6064848128, 6117276928 ]
+
+Tensor: model.layers.6.self_attn.q_norm.weight
+  layer: 6
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 6117276928, 6117277184 ]
+
+Tensor: model.layers.6.self_attn.q_proj.weight
+  layer: 6
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 6117277184, 6169705984 ]
+
+Tensor: model.layers.6.self_attn.v_proj.weight
+  layer: 6
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 6169705984, 6180191744 ]
+
+Tensor: model.layers.7.input_layernorm.weight
+  layer: 7
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 6180191744, 6180201984 ]
+
+Tensor: model.layers.7.mlp.down_proj.weight
+  layer: 7
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 6180201984, 6358459904 ]
+
+Tensor: model.layers.7.mlp.gate_proj.weight
+  layer: 7
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 6358459904, 6536717824 ]
+
+Tensor: model.layers.7.mlp.up_proj.weight
+  layer: 7
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 6536717824, 6714975744 ]
+
+Tensor: model.layers.7.post_attention_layernorm.weight
+  layer: 7
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 6714975744, 6714985984 ]
+
+Tensor: model.layers.7.self_attn.k_norm.weight
+  layer: 7
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 6714985984, 6714986240 ]
+
+Tensor: model.layers.7.self_attn.k_proj.weight
+  layer: 7
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 6714986240, 6725472000 ]
+
+Tensor: model.layers.7.self_attn.o_proj.weight
+  layer: 7
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 6725472000, 6777900800 ]
+
+Tensor: model.layers.7.self_attn.q_norm.weight
+  layer: 7
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 6777900800, 6777901056 ]
+
+Tensor: model.layers.7.self_attn.q_proj.weight
+  layer: 7
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 6777901056, 6830329856 ]
+
+Tensor: model.layers.7.self_attn.v_proj.weight
+  layer: 7
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 6830329856, 6840815616 ]
+
+Tensor: model.layers.8.input_layernorm.weight
+  layer: 8
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 6840815616, 6840825856 ]
+
+Tensor: model.layers.8.mlp.down_proj.weight
+  layer: 8
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 6840825856, 7019083776 ]
+
+Tensor: model.layers.8.mlp.gate_proj.weight
+  layer: 8
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 7019083776, 7197341696 ]
+
+Tensor: model.layers.8.mlp.up_proj.weight
+  layer: 8
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 7197341696, 7375599616 ]
+
+Tensor: model.layers.8.post_attention_layernorm.weight
+  layer: 8
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 7375599616, 7375609856 ]
+
+Tensor: model.layers.8.self_attn.k_norm.weight
+  layer: 8
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 7375609856, 7375610112 ]
+
+Tensor: model.layers.8.self_attn.k_proj.weight
+  layer: 8
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 7375610112, 7386095872 ]
+
+Tensor: model.layers.8.self_attn.o_proj.weight
+  layer: 8
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 7386095872, 7438524672 ]
+
+Tensor: model.layers.8.self_attn.q_norm.weight
+  layer: 8
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 7438524672, 7438524928 ]
+
+Tensor: model.layers.8.self_attn.q_proj.weight
+  layer: 8
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 7438524928, 7490953728 ]
+
+Tensor: model.layers.8.self_attn.v_proj.weight
+  layer: 8
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 7490953728, 7501439488 ]
+
+Tensor: model.layers.9.mlp.gate_proj.weight
+  layer: 9
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 7501439488, 7679697408 ]
+
+Tensor: model.layers.9.self_attn.k_norm.weight
+  layer: 9
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 7679697408, 7679697664 ]
+
+Tensor: model.layers.9.self_attn.k_proj.weight
+  layer: 9
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 7679697664, 7690183424 ]
+
+Tensor: model.layers.9.self_attn.o_proj.weight
+  layer: 9
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 7690183424, 7742612224 ]
+
+Tensor: model.layers.9.self_attn.q_norm.weight
+  layer: 9
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 7742612224, 7742612480 ]
+
+Tensor: model.layers.9.self_attn.q_proj.weight
+  layer: 9
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 7742612480, 7795041280 ]
+
+Tensor: model.layers.9.self_attn.v_proj.weight
+  layer: 9
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 7795041280, 7805527040 ]
+
+Tensor: model.layers.10.input_layernorm.weight
+  layer: 10
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 7805527040, 7805537280 ]
+
+Tensor: model.layers.10.mlp.down_proj.weight
+  layer: 10
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 7805537280, 7983795200 ]
+
+Tensor: model.layers.10.mlp.gate_proj.weight
+  layer: 10
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 7983795200, 8162053120 ]
+
+Tensor: model.layers.10.mlp.up_proj.weight
+  layer: 10
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 8162053120, 8340311040 ]
+
+Tensor: model.layers.10.post_attention_layernorm.weight
+  layer: 10
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 8340311040, 8340321280 ]
+
+Tensor: model.layers.10.self_attn.k_norm.weight
+  layer: 10
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 8340321280, 8340321536 ]
+
+Tensor: model.layers.10.self_attn.k_proj.weight
+  layer: 10
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 8340321536, 8350807296 ]
+
+Tensor: model.layers.10.self_attn.o_proj.weight
+  layer: 10
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 8350807296, 8403236096 ]
+
+Tensor: model.layers.10.self_attn.q_norm.weight
+  layer: 10
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 8403236096, 8403236352 ]
+
+Tensor: model.layers.10.self_attn.q_proj.weight
+  layer: 10
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 8403236352, 8455665152 ]
+
+Tensor: model.layers.10.self_attn.v_proj.weight
+  layer: 10
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 8455665152, 8466150912 ]
+
+Tensor: model.layers.11.input_layernorm.weight
+  layer: 11
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 8466150912, 8466161152 ]
+
+Tensor: model.layers.11.mlp.down_proj.weight
+  layer: 11
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 8466161152, 8644419072 ]
+
+Tensor: model.layers.11.mlp.gate_proj.weight
+  layer: 11
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 8644419072, 8822676992 ]
+
+Tensor: model.layers.11.mlp.up_proj.weight
+  layer: 11
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 8822676992, 9000934912 ]
+
+Tensor: model.layers.11.post_attention_layernorm.weight
+  layer: 11
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 9000934912, 9000945152 ]
+
+Tensor: model.layers.11.self_attn.k_norm.weight
+  layer: 11
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 9000945152, 9000945408 ]
+
+Tensor: model.layers.11.self_attn.k_proj.weight
+  layer: 11
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 9000945408, 9011431168 ]
+
+Tensor: model.layers.11.self_attn.o_proj.weight
+  layer: 11
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 9011431168, 9063859968 ]
+
+Tensor: model.layers.11.self_attn.q_norm.weight
+  layer: 11
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 9063859968, 9063860224 ]
+
+Tensor: model.layers.11.self_attn.q_proj.weight
+  layer: 11
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 9063860224, 9116289024 ]
+
+Tensor: model.layers.11.self_attn.v_proj.weight
+  layer: 11
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 9116289024, 9126774784 ]
+
+Tensor: model.layers.12.input_layernorm.weight
+  layer: 12
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 9126774784, 9126785024 ]
+
+Tensor: model.layers.12.mlp.down_proj.weight
+  layer: 12
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 9126785024, 9305042944 ]
+
+Tensor: model.layers.12.mlp.gate_proj.weight
+  layer: 12
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 9305042944, 9483300864 ]
+
+Tensor: model.layers.12.mlp.up_proj.weight
+  layer: 12
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 9483300864, 9661558784 ]
+
+Tensor: model.layers.12.post_attention_layernorm.weight
+  layer: 12
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 9661558784, 9661569024 ]
+
+Tensor: model.layers.12.self_attn.k_norm.weight
+  layer: 12
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 9661569024, 9661569280 ]
+
+Tensor: model.layers.12.self_attn.k_proj.weight
+  layer: 12
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 9661569280, 9672055040 ]
+
+Tensor: model.layers.12.self_attn.o_proj.weight
+  layer: 12
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 9672055040, 9724483840 ]
+
+Tensor: model.layers.12.self_attn.q_norm.weight
+  layer: 12
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 9724483840, 9724484096 ]
+
+Tensor: model.layers.12.self_attn.q_proj.weight
+  layer: 12
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 9724484096, 9776912896 ]
+
+Tensor: model.layers.12.self_attn.v_proj.weight
+  layer: 12
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 9776912896, 9787398656 ]
+
+Tensor: model.layers.13.input_layernorm.weight
+  layer: 13
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 9787398656, 9787408896 ]
+
+Tensor: model.layers.13.mlp.down_proj.weight
+  layer: 13
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 9787408896, 9965666816 ]
+
+Tensor: model.layers.13.mlp.gate_proj.weight
+  layer: 13
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 9965666816, 10143924736 ]
+
+Tensor: model.layers.13.mlp.up_proj.weight
+  layer: 13
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 10143924736, 10322182656 ]
+
+Tensor: model.layers.13.post_attention_layernorm.weight
+  layer: 13
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 10322182656, 10322192896 ]
+
+Tensor: model.layers.13.self_attn.k_norm.weight
+  layer: 13
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 10322192896, 10322193152 ]
+
+Tensor: model.layers.13.self_attn.k_proj.weight
+  layer: 13
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 10322193152, 10332678912 ]
+
+Tensor: model.layers.13.self_attn.o_proj.weight
+  layer: 13
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 10332678912, 10385107712 ]
+
+Tensor: model.layers.13.self_attn.q_norm.weight
+  layer: 13
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 10385107712, 10385107968 ]
+
+Tensor: model.layers.13.self_attn.q_proj.weight
+  layer: 13
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 10385107968, 10437536768 ]
+
+Tensor: model.layers.13.self_attn.v_proj.weight
+  layer: 13
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 10437536768, 10448022528 ]
+
+Tensor: model.layers.14.input_layernorm.weight
+  layer: 14
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 10448022528, 10448032768 ]
+
+Tensor: model.layers.14.mlp.down_proj.weight
+  layer: 14
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 10448032768, 10626290688 ]
+
+Tensor: model.layers.14.mlp.gate_proj.weight
+  layer: 14
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 10626290688, 10804548608 ]
+
+Tensor: model.layers.14.mlp.up_proj.weight
+  layer: 14
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 10804548608, 10982806528 ]
+
+Tensor: model.layers.14.post_attention_layernorm.weight
+  layer: 14
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 10982806528, 10982816768 ]
+
+Tensor: model.layers.14.self_attn.k_norm.weight
+  layer: 14
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 10982816768, 10982817024 ]
+
+Tensor: model.layers.14.self_attn.k_proj.weight
+  layer: 14
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 10982817024, 10993302784 ]
+
+Tensor: model.layers.14.self_attn.o_proj.weight
+  layer: 14
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 10993302784, 11045731584 ]
+
+Tensor: model.layers.14.self_attn.q_norm.weight
+  layer: 14
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 11045731584, 11045731840 ]
+
+Tensor: model.layers.14.self_attn.q_proj.weight
+  layer: 14
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 11045731840, 11098160640 ]
+
+Tensor: model.layers.14.self_attn.v_proj.weight
+  layer: 14
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 11098160640, 11108646400 ]
+
+Tensor: model.layers.15.mlp.gate_proj.weight
+  layer: 15
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 11108646400, 11286904320 ]
+
+Tensor: model.layers.15.self_attn.k_norm.weight
+  layer: 15
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 11286904320, 11286904576 ]
+
+Tensor: model.layers.15.self_attn.k_proj.weight
+  layer: 15
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 11286904576, 11297390336 ]
+
+Tensor: model.layers.15.self_attn.o_proj.weight
+  layer: 15
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 11297390336, 11349819136 ]
+
+Tensor: model.layers.15.self_attn.q_norm.weight
+  layer: 15
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 11349819136, 11349819392 ]
+
+Tensor: model.layers.15.self_attn.q_proj.weight
+  layer: 15
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 11349819392, 11402248192 ]
+
+Tensor: model.layers.15.self_attn.v_proj.weight
+  layer: 15
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 11402248192, 11412733952 ]
+
+Tensor: model.layers.9.input_layernorm.weight
+  layer: 9
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 11412733952, 11412744192 ]
+
+Tensor: model.layers.9.mlp.down_proj.weight
+  layer: 9
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 11412744192, 11591002112 ]
+
+Tensor: model.layers.9.mlp.up_proj.weight
+  layer: 9
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 11591002112, 11769260032 ]
+
+Tensor: model.layers.9.post_attention_layernorm.weight
+  layer: 9
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 11769260032, 11769270272 ]
+
+Tensor: model.layers.15.input_layernorm.weight
+  layer: 15
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 11769270272, 11769280512 ]
+
+Tensor: model.layers.15.mlp.down_proj.weight
+  layer: 15
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 11769280512, 11947538432 ]
+
+Tensor: model.layers.15.mlp.up_proj.weight
+  layer: 15
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 11947538432, 12125796352 ]
+
+Tensor: model.layers.15.post_attention_layernorm.weight
+  layer: 15
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 12125796352, 12125806592 ]
+
+Tensor: model.layers.16.input_layernorm.weight
+  layer: 16
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 12125806592, 12125816832 ]
+
+Tensor: model.layers.16.mlp.down_proj.weight
+  layer: 16
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 12125816832, 12304074752 ]
+
+Tensor: model.layers.16.mlp.gate_proj.weight
+  layer: 16
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 12304074752, 12482332672 ]
+
+Tensor: model.layers.16.mlp.up_proj.weight
+  layer: 16
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 12482332672, 12660590592 ]
+
+Tensor: model.layers.16.post_attention_layernorm.weight
+  layer: 16
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 12660590592, 12660600832 ]
+
+Tensor: model.layers.16.self_attn.k_norm.weight
+  layer: 16
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 12660600832, 12660601088 ]
+
+Tensor: model.layers.16.self_attn.k_proj.weight
+  layer: 16
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 12660601088, 12671086848 ]
+
+Tensor: model.layers.16.self_attn.o_proj.weight
+  layer: 16
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 12671086848, 12723515648 ]
+
+Tensor: model.layers.16.self_attn.q_norm.weight
+  layer: 16
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 12723515648, 12723515904 ]
+
+Tensor: model.layers.16.self_attn.q_proj.weight
+  layer: 16
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 12723515904, 12775944704 ]
+
+Tensor: model.layers.16.self_attn.v_proj.weight
+  layer: 16
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 12775944704, 12786430464 ]
+
+Tensor: model.layers.17.input_layernorm.weight
+  layer: 17
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 12786430464, 12786440704 ]
+
+Tensor: model.layers.17.mlp.down_proj.weight
+  layer: 17
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 12786440704, 12964698624 ]
+
+Tensor: model.layers.17.mlp.gate_proj.weight
+  layer: 17
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 12964698624, 13142956544 ]
+
+Tensor: model.layers.17.mlp.up_proj.weight
+  layer: 17
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 13142956544, 13321214464 ]
+
+Tensor: model.layers.17.post_attention_layernorm.weight
+  layer: 17
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 13321214464, 13321224704 ]
+
+Tensor: model.layers.17.self_attn.k_norm.weight
+  layer: 17
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 13321224704, 13321224960 ]
+
+Tensor: model.layers.17.self_attn.k_proj.weight
+  layer: 17
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 13321224960, 13331710720 ]
+
+Tensor: model.layers.17.self_attn.o_proj.weight
+  layer: 17
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 13331710720, 13384139520 ]
+
+Tensor: model.layers.17.self_attn.q_norm.weight
+  layer: 17
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 13384139520, 13384139776 ]
+
+Tensor: model.layers.17.self_attn.q_proj.weight
+  layer: 17
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 13384139776, 13436568576 ]
+
+Tensor: model.layers.17.self_attn.v_proj.weight
+  layer: 17
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 13436568576, 13447054336 ]
+
+Tensor: model.layers.18.input_layernorm.weight
+  layer: 18
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 13447054336, 13447064576 ]
+
+Tensor: model.layers.18.mlp.down_proj.weight
+  layer: 18
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 13447064576, 13625322496 ]
+
+Tensor: model.layers.18.mlp.gate_proj.weight
+  layer: 18
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 13625322496, 13803580416 ]
+
+Tensor: model.layers.18.mlp.up_proj.weight
+  layer: 18
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 13803580416, 13981838336 ]
+
+Tensor: model.layers.18.post_attention_layernorm.weight
+  layer: 18
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 13981838336, 13981848576 ]
+
+Tensor: model.layers.18.self_attn.k_norm.weight
+  layer: 18
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 13981848576, 13981848832 ]
+
+Tensor: model.layers.18.self_attn.k_proj.weight
+  layer: 18
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 13981848832, 13992334592 ]
+
+Tensor: model.layers.18.self_attn.o_proj.weight
+  layer: 18
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 13992334592, 14044763392 ]
+
+Tensor: model.layers.18.self_attn.q_norm.weight
+  layer: 18
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 14044763392, 14044763648 ]
+
+Tensor: model.layers.18.self_attn.q_proj.weight
+  layer: 18
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 14044763648, 14097192448 ]
+
+Tensor: model.layers.18.self_attn.v_proj.weight
+  layer: 18
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 14097192448, 14107678208 ]
+
+Tensor: model.layers.19.input_layernorm.weight
+  layer: 19
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 14107678208, 14107688448 ]
+
+Tensor: model.layers.19.mlp.down_proj.weight
+  layer: 19
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 14107688448, 14285946368 ]
+
+Tensor: model.layers.19.mlp.gate_proj.weight
+  layer: 19
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 14285946368, 14464204288 ]
+
+Tensor: model.layers.19.mlp.up_proj.weight
+  layer: 19
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 14464204288, 14642462208 ]
+
+Tensor: model.layers.19.post_attention_layernorm.weight
+  layer: 19
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 14642462208, 14642472448 ]
+
+Tensor: model.layers.19.self_attn.k_norm.weight
+  layer: 19
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 14642472448, 14642472704 ]
+
+Tensor: model.layers.19.self_attn.k_proj.weight
+  layer: 19
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 14642472704, 14652958464 ]
+
+Tensor: model.layers.19.self_attn.o_proj.weight
+  layer: 19
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 14652958464, 14705387264 ]
+
+Tensor: model.layers.19.self_attn.q_norm.weight
+  layer: 19
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 14705387264, 14705387520 ]
+
+Tensor: model.layers.19.self_attn.q_proj.weight
+  layer: 19
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 14705387520, 14757816320 ]
+
+Tensor: model.layers.19.self_attn.v_proj.weight
+  layer: 19
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 14757816320, 14768302080 ]
+
+Tensor: model.layers.20.input_layernorm.weight
+  layer: 20
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 14768302080, 14768312320 ]
+
+Tensor: model.layers.20.mlp.down_proj.weight
+  layer: 20
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 14768312320, 14946570240 ]
+
+Tensor: model.layers.20.mlp.gate_proj.weight
+  layer: 20
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 14946570240, 15124828160 ]
+
+Tensor: model.layers.20.mlp.up_proj.weight
+  layer: 20
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 15124828160, 15303086080 ]
+
+Tensor: model.layers.20.post_attention_layernorm.weight
+  layer: 20
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 15303086080, 15303096320 ]
+
+Tensor: model.layers.20.self_attn.k_norm.weight
+  layer: 20
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 15303096320, 15303096576 ]
+
+Tensor: model.layers.20.self_attn.k_proj.weight
+  layer: 20
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 15303096576, 15313582336 ]
+
+Tensor: model.layers.20.self_attn.o_proj.weight
+  layer: 20
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 15313582336, 15366011136 ]
+
+Tensor: model.layers.20.self_attn.q_norm.weight
+  layer: 20
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 15366011136, 15366011392 ]
+
+Tensor: model.layers.20.self_attn.q_proj.weight
+  layer: 20
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 15366011392, 15418440192 ]
+
+Tensor: model.layers.20.self_attn.v_proj.weight
+  layer: 20
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 15418440192, 15428925952 ]
+
+Tensor: model.layers.21.mlp.gate_proj.weight
+  layer: 21
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 15428925952, 15607183872 ]
+
+Tensor: model.layers.21.self_attn.k_norm.weight
+  layer: 21
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 15607183872, 15607184128 ]
+
+Tensor: model.layers.21.self_attn.k_proj.weight
+  layer: 21
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 15607184128, 15617669888 ]
+
+Tensor: model.layers.21.self_attn.o_proj.weight
+  layer: 21
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 15617669888, 15670098688 ]
+
+Tensor: model.layers.21.self_attn.q_norm.weight
+  layer: 21
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 15670098688, 15670098944 ]
+
+Tensor: model.layers.21.self_attn.q_proj.weight
+  layer: 21
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 15670098944, 15722527744 ]
+
+Tensor: model.layers.21.self_attn.v_proj.weight
+  layer: 21
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 15722527744, 15733013504 ]
+
+Tensor: model.layers.21.input_layernorm.weight
+  layer: 21
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 15733013504, 15733023744 ]
+
+Tensor: model.layers.21.mlp.down_proj.weight
+  layer: 21
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 15733023744, 15911281664 ]
+
+Tensor: model.layers.21.mlp.up_proj.weight
+  layer: 21
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 15911281664, 16089539584 ]
+
+Tensor: model.layers.21.post_attention_layernorm.weight
+  layer: 21
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 16089539584, 16089549824 ]
+
+Tensor: model.layers.22.input_layernorm.weight
+  layer: 22
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 16089549824, 16089560064 ]
+
+Tensor: model.layers.22.mlp.down_proj.weight
+  layer: 22
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 16089560064, 16267817984 ]
+
+Tensor: model.layers.22.mlp.gate_proj.weight
+  layer: 22
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 16267817984, 16446075904 ]
+
+Tensor: model.layers.22.mlp.up_proj.weight
+  layer: 22
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 16446075904, 16624333824 ]
+
+Tensor: model.layers.22.post_attention_layernorm.weight
+  layer: 22
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 16624333824, 16624344064 ]
+
+Tensor: model.layers.22.self_attn.k_norm.weight
+  layer: 22
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 16624344064, 16624344320 ]
+
+Tensor: model.layers.22.self_attn.k_proj.weight
+  layer: 22
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 16624344320, 16634830080 ]
+
+Tensor: model.layers.22.self_attn.o_proj.weight
+  layer: 22
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 16634830080, 16687258880 ]
+
+Tensor: model.layers.22.self_attn.q_norm.weight
+  layer: 22
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 16687258880, 16687259136 ]
+
+Tensor: model.layers.22.self_attn.q_proj.weight
+  layer: 22
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 16687259136, 16739687936 ]
+
+Tensor: model.layers.22.self_attn.v_proj.weight
+  layer: 22
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 16739687936, 16750173696 ]
+
+Tensor: model.layers.23.input_layernorm.weight
+  layer: 23
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 16750173696, 16750183936 ]
+
+Tensor: model.layers.23.mlp.down_proj.weight
+  layer: 23
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 16750183936, 16928441856 ]
+
+Tensor: model.layers.23.mlp.gate_proj.weight
+  layer: 23
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 16928441856, 17106699776 ]
+
+Tensor: model.layers.23.mlp.up_proj.weight
+  layer: 23
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 17106699776, 17284957696 ]
+
+Tensor: model.layers.23.post_attention_layernorm.weight
+  layer: 23
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 17284957696, 17284967936 ]
+
+Tensor: model.layers.23.self_attn.k_norm.weight
+  layer: 23
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 17284967936, 17284968192 ]
+
+Tensor: model.layers.23.self_attn.k_proj.weight
+  layer: 23
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 17284968192, 17295453952 ]
+
+Tensor: model.layers.23.self_attn.o_proj.weight
+  layer: 23
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 17295453952, 17347882752 ]
+
+Tensor: model.layers.23.self_attn.q_norm.weight
+  layer: 23
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 17347882752, 17347883008 ]
+
+Tensor: model.layers.23.self_attn.q_proj.weight
+  layer: 23
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 17347883008, 17400311808 ]
+
+Tensor: model.layers.23.self_attn.v_proj.weight
+  layer: 23
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 17400311808, 17410797568 ]
+
+Tensor: model.layers.24.input_layernorm.weight
+  layer: 24
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 17410797568, 17410807808 ]
+
+Tensor: model.layers.24.mlp.down_proj.weight
+  layer: 24
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 17410807808, 17589065728 ]
+
+Tensor: model.layers.24.mlp.gate_proj.weight
+  layer: 24
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 17589065728, 17767323648 ]
+
+Tensor: model.layers.24.mlp.up_proj.weight
+  layer: 24
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 17767323648, 17945581568 ]
+
+Tensor: model.layers.24.post_attention_layernorm.weight
+  layer: 24
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 17945581568, 17945591808 ]
+
+Tensor: model.layers.24.self_attn.k_norm.weight
+  layer: 24
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 17945591808, 17945592064 ]
+
+Tensor: model.layers.24.self_attn.k_proj.weight
+  layer: 24
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 17945592064, 17956077824 ]
+
+Tensor: model.layers.24.self_attn.o_proj.weight
+  layer: 24
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 17956077824, 18008506624 ]
+
+Tensor: model.layers.24.self_attn.q_norm.weight
+  layer: 24
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 18008506624, 18008506880 ]
+
+Tensor: model.layers.24.self_attn.q_proj.weight
+  layer: 24
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 18008506880, 18060935680 ]
+
+Tensor: model.layers.24.self_attn.v_proj.weight
+  layer: 24
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 18060935680, 18071421440 ]
+
+Tensor: model.layers.25.input_layernorm.weight
+  layer: 25
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 18071421440, 18071431680 ]
+
+Tensor: model.layers.25.mlp.down_proj.weight
+  layer: 25
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 18071431680, 18249689600 ]
+
+Tensor: model.layers.25.mlp.gate_proj.weight
+  layer: 25
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 18249689600, 18427947520 ]
+
+Tensor: model.layers.25.mlp.up_proj.weight
+  layer: 25
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 18427947520, 18606205440 ]
+
+Tensor: model.layers.25.post_attention_layernorm.weight
+  layer: 25
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 18606205440, 18606215680 ]
+
+Tensor: model.layers.25.self_attn.k_norm.weight
+  layer: 25
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 18606215680, 18606215936 ]
+
+Tensor: model.layers.25.self_attn.k_proj.weight
+  layer: 25
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 18606215936, 18616701696 ]
+
+Tensor: model.layers.25.self_attn.o_proj.weight
+  layer: 25
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 18616701696, 18669130496 ]
+
+Tensor: model.layers.25.self_attn.q_norm.weight
+  layer: 25
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 18669130496, 18669130752 ]
+
+Tensor: model.layers.25.self_attn.q_proj.weight
+  layer: 25
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 18669130752, 18721559552 ]
+
+Tensor: model.layers.25.self_attn.v_proj.weight
+  layer: 25
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 18721559552, 18732045312 ]
+
+Tensor: model.layers.26.input_layernorm.weight
+  layer: 26
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 18732045312, 18732055552 ]
+
+Tensor: model.layers.26.mlp.down_proj.weight
+  layer: 26
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 18732055552, 18910313472 ]
+
+Tensor: model.layers.26.mlp.gate_proj.weight
+  layer: 26
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 18910313472, 19088571392 ]
+
+Tensor: model.layers.26.mlp.up_proj.weight
+  layer: 26
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 19088571392, 19266829312 ]
+
+Tensor: model.layers.26.post_attention_layernorm.weight
+  layer: 26
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 19266829312, 19266839552 ]
+
+Tensor: model.layers.26.self_attn.k_norm.weight
+  layer: 26
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 19266839552, 19266839808 ]
+
+Tensor: model.layers.26.self_attn.k_proj.weight
+  layer: 26
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 19266839808, 19277325568 ]
+
+Tensor: model.layers.26.self_attn.o_proj.weight
+  layer: 26
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 19277325568, 19329754368 ]
+
+Tensor: model.layers.26.self_attn.q_norm.weight
+  layer: 26
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 19329754368, 19329754624 ]
+
+Tensor: model.layers.26.self_attn.q_proj.weight
+  layer: 26
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 19329754624, 19382183424 ]
+
+Tensor: model.layers.26.self_attn.v_proj.weight
+  layer: 26
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 19382183424, 19392669184 ]
+
+Tensor: model.layers.27.mlp.gate_proj.weight
+  layer: 27
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 19392669184, 19570927104 ]
+
+Tensor: model.layers.27.self_attn.k_norm.weight
+  layer: 27
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 19570927104, 19570927360 ]
+
+Tensor: model.layers.27.self_attn.k_proj.weight
+  layer: 27
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 19570927360, 19581413120 ]
+
+Tensor: model.layers.27.self_attn.o_proj.weight
+  layer: 27
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 19581413120, 19633841920 ]
+
+Tensor: model.layers.27.self_attn.q_norm.weight
+  layer: 27
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 19633841920, 19633842176 ]
+
+Tensor: model.layers.27.self_attn.q_proj.weight
+  layer: 27
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 19633842176, 19686270976 ]
+
+Tensor: model.layers.27.self_attn.v_proj.weight
+  layer: 27
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 19686270976, 19696756736 ]
+
+Tensor: model.layers.27.input_layernorm.weight
+  layer: 27
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 19696756736, 19696766976 ]
+
+Tensor: model.layers.27.mlp.down_proj.weight
+  layer: 27
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 19696766976, 19875024896 ]
+
+Tensor: model.layers.27.mlp.up_proj.weight
+  layer: 27
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 19875024896, 20053282816 ]
+
+Tensor: model.layers.27.post_attention_layernorm.weight
+  layer: 27
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 20053282816, 20053293056 ]
+
+Tensor: model.layers.28.input_layernorm.weight
+  layer: 28
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 20053293056, 20053303296 ]
+
+Tensor: model.layers.28.mlp.down_proj.weight
+  layer: 28
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 20053303296, 20231561216 ]
+
+Tensor: model.layers.28.mlp.gate_proj.weight
+  layer: 28
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 20231561216, 20409819136 ]
+
+Tensor: model.layers.28.mlp.up_proj.weight
+  layer: 28
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 20409819136, 20588077056 ]
+
+Tensor: model.layers.28.post_attention_layernorm.weight
+  layer: 28
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 20588077056, 20588087296 ]
+
+Tensor: model.layers.28.self_attn.k_norm.weight
+  layer: 28
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 20588087296, 20588087552 ]
+
+Tensor: model.layers.28.self_attn.k_proj.weight
+  layer: 28
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 20588087552, 20598573312 ]
+
+Tensor: model.layers.28.self_attn.o_proj.weight
+  layer: 28
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 20598573312, 20651002112 ]
+
+Tensor: model.layers.28.self_attn.q_norm.weight
+  layer: 28
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 20651002112, 20651002368 ]
+
+Tensor: model.layers.28.self_attn.q_proj.weight
+  layer: 28
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 20651002368, 20703431168 ]
+
+Tensor: model.layers.28.self_attn.v_proj.weight
+  layer: 28
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 20703431168, 20713916928 ]
+
+Tensor: model.layers.29.input_layernorm.weight
+  layer: 29
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 20713916928, 20713927168 ]
+
+Tensor: model.layers.29.mlp.down_proj.weight
+  layer: 29
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 20713927168, 20892185088 ]
+
+Tensor: model.layers.29.mlp.gate_proj.weight
+  layer: 29
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 20892185088, 21070443008 ]
+
+Tensor: model.layers.29.mlp.up_proj.weight
+  layer: 29
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 21070443008, 21248700928 ]
+
+Tensor: model.layers.29.post_attention_layernorm.weight
+  layer: 29
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 21248700928, 21248711168 ]
+
+Tensor: model.layers.29.self_attn.k_norm.weight
+  layer: 29
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 21248711168, 21248711424 ]
+
+Tensor: model.layers.29.self_attn.k_proj.weight
+  layer: 29
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 21248711424, 21259197184 ]
+
+Tensor: model.layers.29.self_attn.o_proj.weight
+  layer: 29
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 21259197184, 21311625984 ]
+
+Tensor: model.layers.29.self_attn.q_norm.weight
+  layer: 29
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 21311625984, 21311626240 ]
+
+Tensor: model.layers.29.self_attn.q_proj.weight
+  layer: 29
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 21311626240, 21364055040 ]
+
+Tensor: model.layers.29.self_attn.v_proj.weight
+  layer: 29
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 21364055040, 21374540800 ]
+
+Tensor: model.layers.30.input_layernorm.weight
+  layer: 30
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 21374540800, 21374551040 ]
+
+Tensor: model.layers.30.mlp.down_proj.weight
+  layer: 30
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 21374551040, 21552808960 ]
+
+Tensor: model.layers.30.mlp.gate_proj.weight
+  layer: 30
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 21552808960, 21731066880 ]
+
+Tensor: model.layers.30.mlp.up_proj.weight
+  layer: 30
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 21731066880, 21909324800 ]
+
+Tensor: model.layers.30.post_attention_layernorm.weight
+  layer: 30
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 21909324800, 21909335040 ]
+
+Tensor: model.layers.30.self_attn.k_norm.weight
+  layer: 30
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 21909335040, 21909335296 ]
+
+Tensor: model.layers.30.self_attn.k_proj.weight
+  layer: 30
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 21909335296, 21919821056 ]
+
+Tensor: model.layers.30.self_attn.o_proj.weight
+  layer: 30
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 21919821056, 21972249856 ]
+
+Tensor: model.layers.30.self_attn.q_norm.weight
+  layer: 30
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 21972249856, 21972250112 ]
+
+Tensor: model.layers.30.self_attn.q_proj.weight
+  layer: 30
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 21972250112, 22024678912 ]
+
+Tensor: model.layers.30.self_attn.v_proj.weight
+  layer: 30
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 22024678912, 22035164672 ]
+
+Tensor: model.layers.31.input_layernorm.weight
+  layer: 31
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 22035164672, 22035174912 ]
+
+Tensor: model.layers.31.mlp.down_proj.weight
+  layer: 31
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 22035174912, 22213432832 ]
+
+Tensor: model.layers.31.mlp.gate_proj.weight
+  layer: 31
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 22213432832, 22391690752 ]
+
+Tensor: model.layers.31.mlp.up_proj.weight
+  layer: 31
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 22391690752, 22569948672 ]
+
+Tensor: model.layers.31.post_attention_layernorm.weight
+  layer: 31
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 22569948672, 22569958912 ]
+
+Tensor: model.layers.31.self_attn.k_norm.weight
+  layer: 31
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 22569958912, 22569959168 ]
+
+Tensor: model.layers.31.self_attn.k_proj.weight
+  layer: 31
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 22569959168, 22580444928 ]
+
+Tensor: model.layers.31.self_attn.o_proj.weight
+  layer: 31
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 22580444928, 22632873728 ]
+
+Tensor: model.layers.31.self_attn.q_norm.weight
+  layer: 31
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 22632873728, 22632873984 ]
+
+Tensor: model.layers.31.self_attn.q_proj.weight
+  layer: 31
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 22632873984, 22685302784 ]
+
+Tensor: model.layers.31.self_attn.v_proj.weight
+  layer: 31
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 22685302784, 22695788544 ]
+
+Tensor: model.layers.32.input_layernorm.weight
+  layer: 32
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 22695788544, 22695798784 ]
+
+Tensor: model.layers.32.mlp.down_proj.weight
+  layer: 32
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 22695798784, 22874056704 ]
+
+Tensor: model.layers.32.mlp.gate_proj.weight
+  layer: 32
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 22874056704, 23052314624 ]
+
+Tensor: model.layers.32.mlp.up_proj.weight
+  layer: 32
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 23052314624, 23230572544 ]
+
+Tensor: model.layers.32.post_attention_layernorm.weight
+  layer: 32
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 23230572544, 23230582784 ]
+
+Tensor: model.layers.32.self_attn.k_norm.weight
+  layer: 32
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 23230582784, 23230583040 ]
+
+Tensor: model.layers.32.self_attn.k_proj.weight
+  layer: 32
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 23230583040, 23241068800 ]
+
+Tensor: model.layers.32.self_attn.o_proj.weight
+  layer: 32
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 23241068800, 23293497600 ]
+
+Tensor: model.layers.32.self_attn.q_norm.weight
+  layer: 32
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 23293497600, 23293497856 ]
+
+Tensor: model.layers.32.self_attn.q_proj.weight
+  layer: 32
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 23293497856, 23345926656 ]
+
+Tensor: model.layers.32.self_attn.v_proj.weight
+  layer: 32
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 23345926656, 23356412416 ]
+
+Tensor: model.layers.33.mlp.gate_proj.weight
+  layer: 33
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 23356412416, 23534670336 ]
+
+Tensor: model.layers.33.self_attn.k_norm.weight
+  layer: 33
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 23534670336, 23534670592 ]
+
+Tensor: model.layers.33.self_attn.k_proj.weight
+  layer: 33
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 23534670592, 23545156352 ]
+
+Tensor: model.layers.33.self_attn.o_proj.weight
+  layer: 33
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 23545156352, 23597585152 ]
+
+Tensor: model.layers.33.self_attn.q_norm.weight
+  layer: 33
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 23597585152, 23597585408 ]
+
+Tensor: model.layers.33.self_attn.q_proj.weight
+  layer: 33
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 23597585408, 23650014208 ]
+
+Tensor: model.layers.33.self_attn.v_proj.weight
+  layer: 33
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 23650014208, 23660499968 ]
+
+Tensor: model.layers.33.input_layernorm.weight
+  layer: 33
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 23660499968, 23660510208 ]
+
+Tensor: model.layers.33.mlp.down_proj.weight
+  layer: 33
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 23660510208, 23838768128 ]
+
+Tensor: model.layers.33.mlp.up_proj.weight
+  layer: 33
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 23838768128, 24017026048 ]
+
+Tensor: model.layers.33.post_attention_layernorm.weight
+  layer: 33
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 24017026048, 24017036288 ]
+
+Tensor: model.layers.34.input_layernorm.weight
+  layer: 34
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 24017036288, 24017046528 ]
+
+Tensor: model.layers.34.mlp.down_proj.weight
+  layer: 34
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 24017046528, 24195304448 ]
+
+Tensor: model.layers.34.mlp.gate_proj.weight
+  layer: 34
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 24195304448, 24373562368 ]
+
+Tensor: model.layers.34.mlp.up_proj.weight
+  layer: 34
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 24373562368, 24551820288 ]
+
+Tensor: model.layers.34.post_attention_layernorm.weight
+  layer: 34
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 24551820288, 24551830528 ]
+
+Tensor: model.layers.34.self_attn.k_norm.weight
+  layer: 34
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 24551830528, 24551830784 ]
+
+Tensor: model.layers.34.self_attn.k_proj.weight
+  layer: 34
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 24551830784, 24562316544 ]
+
+Tensor: model.layers.34.self_attn.o_proj.weight
+  layer: 34
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 24562316544, 24614745344 ]
+
+Tensor: model.layers.34.self_attn.q_norm.weight
+  layer: 34
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 24614745344, 24614745600 ]
+
+Tensor: model.layers.34.self_attn.q_proj.weight
+  layer: 34
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 24614745600, 24667174400 ]
+
+Tensor: model.layers.34.self_attn.v_proj.weight
+  layer: 34
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 24667174400, 24677660160 ]
+
+Tensor: model.layers.35.input_layernorm.weight
+  layer: 35
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 24677660160, 24677670400 ]
+
+Tensor: model.layers.35.mlp.down_proj.weight
+  layer: 35
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 24677670400, 24855928320 ]
+
+Tensor: model.layers.35.mlp.gate_proj.weight
+  layer: 35
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 24855928320, 25034186240 ]
+
+Tensor: model.layers.35.mlp.up_proj.weight
+  layer: 35
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 25034186240, 25212444160 ]
+
+Tensor: model.layers.35.post_attention_layernorm.weight
+  layer: 35
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 25212444160, 25212454400 ]
+
+Tensor: model.layers.35.self_attn.k_norm.weight
+  layer: 35
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 25212454400, 25212454656 ]
+
+Tensor: model.layers.35.self_attn.k_proj.weight
+  layer: 35
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 25212454656, 25222940416 ]
+
+Tensor: model.layers.35.self_attn.o_proj.weight
+  layer: 35
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 25222940416, 25275369216 ]
+
+Tensor: model.layers.35.self_attn.q_norm.weight
+  layer: 35
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 25275369216, 25275369472 ]
+
+Tensor: model.layers.35.self_attn.q_proj.weight
+  layer: 35
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 25275369472, 25327798272 ]
+
+Tensor: model.layers.35.self_attn.v_proj.weight
+  layer: 35
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 25327798272, 25338284032 ]
+
+Tensor: model.layers.36.input_layernorm.weight
+  layer: 36
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 25338284032, 25338294272 ]
+
+Tensor: model.layers.36.mlp.down_proj.weight
+  layer: 36
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 25338294272, 25516552192 ]
+
+Tensor: model.layers.36.mlp.gate_proj.weight
+  layer: 36
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 25516552192, 25694810112 ]
+
+Tensor: model.layers.36.mlp.up_proj.weight
+  layer: 36
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 25694810112, 25873068032 ]
+
+Tensor: model.layers.36.post_attention_layernorm.weight
+  layer: 36
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 25873068032, 25873078272 ]
+
+Tensor: model.layers.36.self_attn.k_norm.weight
+  layer: 36
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 25873078272, 25873078528 ]
+
+Tensor: model.layers.36.self_attn.k_proj.weight
+  layer: 36
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 25873078528, 25883564288 ]
+
+Tensor: model.layers.36.self_attn.o_proj.weight
+  layer: 36
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 25883564288, 25935993088 ]
+
+Tensor: model.layers.36.self_attn.q_norm.weight
+  layer: 36
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 25935993088, 25935993344 ]
+
+Tensor: model.layers.36.self_attn.q_proj.weight
+  layer: 36
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 25935993344, 25988422144 ]
+
+Tensor: model.layers.36.self_attn.v_proj.weight
+  layer: 36
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 25988422144, 25998907904 ]
+
+Tensor: model.layers.37.input_layernorm.weight
+  layer: 37
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 25998907904, 25998918144 ]
+
+Tensor: model.layers.37.mlp.down_proj.weight
+  layer: 37
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 25998918144, 26177176064 ]
+
+Tensor: model.layers.37.mlp.gate_proj.weight
+  layer: 37
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 26177176064, 26355433984 ]
+
+Tensor: model.layers.37.mlp.up_proj.weight
+  layer: 37
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 26355433984, 26533691904 ]
+
+Tensor: model.layers.37.post_attention_layernorm.weight
+  layer: 37
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 26533691904, 26533702144 ]
+
+Tensor: model.layers.37.self_attn.k_norm.weight
+  layer: 37
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 26533702144, 26533702400 ]
+
+Tensor: model.layers.37.self_attn.k_proj.weight
+  layer: 37
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 26533702400, 26544188160 ]
+
+Tensor: model.layers.37.self_attn.o_proj.weight
+  layer: 37
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 26544188160, 26596616960 ]
+
+Tensor: model.layers.37.self_attn.q_norm.weight
+  layer: 37
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 26596616960, 26596617216 ]
+
+Tensor: model.layers.37.self_attn.q_proj.weight
+  layer: 37
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 26596617216, 26649046016 ]
+
+Tensor: model.layers.37.self_attn.v_proj.weight
+  layer: 37
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 26649046016, 26659531776 ]
+
+Tensor: model.layers.38.input_layernorm.weight
+  layer: 38
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 26659531776, 26659542016 ]
+
+Tensor: model.layers.38.mlp.down_proj.weight
+  layer: 38
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 26659542016, 26837799936 ]
+
+Tensor: model.layers.38.mlp.gate_proj.weight
+  layer: 38
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 26837799936, 27016057856 ]
+
+Tensor: model.layers.38.mlp.up_proj.weight
+  layer: 38
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 27016057856, 27194315776 ]
+
+Tensor: model.layers.38.post_attention_layernorm.weight
+  layer: 38
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 27194315776, 27194326016 ]
+
+Tensor: model.layers.38.self_attn.k_norm.weight
+  layer: 38
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 27194326016, 27194326272 ]
+
+Tensor: model.layers.38.self_attn.k_proj.weight
+  layer: 38
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 27194326272, 27204812032 ]
+
+Tensor: model.layers.38.self_attn.o_proj.weight
+  layer: 38
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 27204812032, 27257240832 ]
+
+Tensor: model.layers.38.self_attn.q_norm.weight
+  layer: 38
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 27257240832, 27257241088 ]
+
+Tensor: model.layers.38.self_attn.q_proj.weight
+  layer: 38
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 27257241088, 27309669888 ]
+
+Tensor: model.layers.38.self_attn.v_proj.weight
+  layer: 38
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 27309669888, 27320155648 ]
+
+Tensor: model.layers.39.mlp.gate_proj.weight
+  layer: 39
+  short_name: mlp.gate_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 27320155648, 27498413568 ]
+
+Tensor: model.layers.39.self_attn.k_norm.weight
+  layer: 39
+  short_name: self_attn.k_norm.weight
+  shape: [ 128 ]
+  offsets: [ 27498413568, 27498413824 ]
+
+Tensor: model.layers.39.self_attn.k_proj.weight
+  layer: 39
+  short_name: self_attn.k_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 27498413824, 27508899584 ]
+
+Tensor: model.layers.39.self_attn.o_proj.weight
+  layer: 39
+  short_name: self_attn.o_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 27508899584, 27561328384 ]
+
+Tensor: model.layers.39.self_attn.q_norm.weight
+  layer: 39
+  short_name: self_attn.q_norm.weight
+  shape: [ 128 ]
+  offsets: [ 27561328384, 27561328640 ]
+
+Tensor: model.layers.39.self_attn.q_proj.weight
+  layer: 39
+  short_name: self_attn.q_proj.weight
+  shape: [ 5120 5120 ]
+  offsets: [ 27561328640, 27613757440 ]
+
+Tensor: model.layers.39.self_attn.v_proj.weight
+  layer: 39
+  short_name: self_attn.v_proj.weight
+  shape: [ 1024 5120 ]
+  offsets: [ 27613757440, 27624243200 ]
+
+Tensor: lm_head.weight
+  layer: -1
+  short_name: logits
+  shape: [ 151936 5120 ]
+  offsets: [ 27624243200, 29180067840 ]
+
+Tensor: model.layers.39.input_layernorm.weight
+  layer: 39
+  short_name: input_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 29180067840, 29180078080 ]
+
+Tensor: model.layers.39.mlp.down_proj.weight
+  layer: 39
+  short_name: mlp.down_proj.weight
+  shape: [ 5120 17408 ]
+  offsets: [ 29180078080, 29358336000 ]
+
+Tensor: model.layers.39.mlp.up_proj.weight
+  layer: 39
+  short_name: mlp.up_proj.weight
+  shape: [ 17408 5120 ]
+  offsets: [ 29358336000, 29536593920 ]
+
+Tensor: model.layers.39.post_attention_layernorm.weight
+  layer: 39
+  short_name: post_attention_layernorm.weight
+  shape: [ 5120 ]
+  offsets: [ 29536593920, 29536604160 ]
+
+Tensor: model.norm.weight
+  layer: -1
+  short_name: norm.weight
+  shape: [ 5120 ]
+  offsets: [ 29536604160, 29536614400 ]
+

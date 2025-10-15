@@ -1,0 +1,3 @@
+/home/Abdur_Rafae/rampup/qwen/build/CMakeFiles/qwen.dir
+/home/Abdur_Rafae/rampup/qwen/build/CMakeFiles/edit_cache.dir
+/home/Abdur_Rafae/rampup/qwen/build/CMakeFiles/rebuild_cache.dir
