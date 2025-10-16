@@ -13,7 +13,7 @@ __global__ void qkNorm(__nv_bfloat16*qk, __nv_bfloat16*norm_weigths ,int head_di
 
 
 __global__ void RoPE(float *cos_values, float *sin_values, __nv_bfloat16*embedded_matrix, int seq_len, int head_dim, int embedding_dim, int num_heads);
-__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, __nv_bfloat16*V_matrix,__nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base);
+__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, __nv_bfloat16*V_matrix,__nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base, int layer_id);
 __global__ void activation( __nv_bfloat16 *matrix, size_t size);
 
 __global__ void residual_add(__nv_bfloat16* __restrict__ mat_a, __nv_bfloat16* __restrict__ mat_b, size_t num_of_elements);

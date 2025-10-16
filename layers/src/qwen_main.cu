@@ -18,8 +18,39 @@
 #include "iengine.cuh"
 
 
+
+// #define PRINT_TIME
+
+inline void startCudaTimer(cudaEvent_t &start, cudaEvent_t &stop) {
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+}
+
+inline float stopCudaTimer(cudaEvent_t &start, cudaEvent_t &stop, const char* label, int layer) {
+    float ms = 0.0f;
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&ms, start, stop);
+    if (label) {
+        std::cout <<"Layer: "<< layer <<label << ": " << ms << " ms" << std::endl;
+    } else {
+        std::cout << "Elapsed time: " << ms << " ms" << std::endl;
+    }
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
+    return ms;
+}
+
+
+
+
 int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<tensor>> tensors, std::ifstream &weights){
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
 
 
     ModelBuffers *buffer;
@@ -60,33 +91,135 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             launch_rope(buffer->cos_values_d, buffer->sin_values_d, buffer->Q, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim, buffer->num_of_qheads); // Apply RoPE to Q for all query heads
             launch_rope(buffer->cos_values_d, buffer->sin_values_d, buffer->K, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim_kv, buffer->num_of_kvheads); // Apply RoPE to K for all KV heads
 
-            //appending kv cache
-            cudaMemcpy(&buffer->k_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], buffer->K, buffer->hidden_dim_kv*buffer->sequence_len*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
-            cudaMemcpy(&buffer->v_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], buffer->V, buffer->hidden_dim_kv*buffer->sequence_len*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
+
+            size_t width_bytes = buffer->hidden_dim_kv * sizeof(__nv_bfloat16);
+            size_t height = buffer->sequence_len;
+            size_t src_pitch = width_bytes;
+            size_t dst_pitch = buffer->number_of_layers * width_bytes;
+            
+
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
+            cudaMemcpy2D(
+            /* dst      */ &buffer->k_cache[i * buffer->hidden_dim_kv],
+            /* dpitch   */ dst_pitch,
+            /* src      */ buffer->K,
+            /* spitch   */ src_pitch,
+            /* width    */ width_bytes,
+            /* height   */ height,
+            /* kind     */ cudaMemcpyDeviceToDevice);
+
+            cudaMemcpy2D(
+            &buffer->v_cache[i * buffer->hidden_dim_kv],
+            dst_pitch,
+            buffer->V,
+            src_pitch,
+            width_bytes,
+            height,
+            cudaMemcpyDeviceToDevice);
+
+        
+            
+            #ifdef PRINT_TIME
+            float ms = stopCudaTimer(start, stop, "Time in kv_cache copy", i);
+            #endif
+
+            
             //self attention
-            launch_attn(buffer->Q, buffer->K, buffer->V, buffer->atten_out, buffer->sequence_len, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim, buffer->hidden_dim_kv, /*causal=*/1, 0); // self-attention (prefill uses full causal window)
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
+            launch_attn(buffer->Q, buffer->k_cache, buffer->v_cache, buffer->atten_out, buffer->sequence_len, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim, buffer->hidden_dim_kv, /*causal=*/1, 0, i); // self-attention (prefill uses full causal window)
+            #ifdef PRINT_TIME
+  
+            ms = stopCudaTimer(start, stop, "Time in attention", i);
+            #endif
+            
+            
+            
+            
+            
             //outut projection self attention
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             proj(tensors["self_attn.o_proj.weight"][i], weights, buffer->o_proj_weights_h, buffer->o_proj_weights_d, buffer->o_proj_size, buffer->atten_out, buffer->out_proj, buffer->sequence_len, /*n=*/5120, /*k=*/5120); // output projection (O proj)
+            #ifdef PRINT_TIME
+
+            ms = stopCudaTimer(start, stop, "Time in o_projction", i);
+            #endif
 
             //residual add
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             launch_resadd(buffer->embeddings_out, buffer->out_proj, buffer->sequence_len * buffer->hidden_dim); // residual add: x += out_proj
+            #ifdef PRINT_TIME
+
+            ms = stopCudaTimer(start, stop, "Time in residual add", i);
+            #endif
 
             //normalization
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             load_weight(tensors["post_attention_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim); // load post-attn RMSNorm weights to device
             launch_rms(buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, buffer->sequence_len); // post-attention RMSNorm
+            
+            #ifdef PRINT_TIME
+
+            ms = stopCudaTimer(start, stop, "Time in rms", i);
+            #endif
 
             //MLP
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             proj(tensors["mlp.up_proj.weight"][i],   weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->rms_out,      buffer->MLP_UP,        buffer->sequence_len, /*n=*/5120,           /*k=*/buffer->up_dim); // MLP up-proj
+            #ifdef PRINT_TIME
 
+            ms = stopCudaTimer(start, stop, "Time in MLP up proj", i);
+            #endif
+
+
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             proj(tensors["mlp.gate_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->rms_out,      buffer->MLP_GATE,      buffer->sequence_len, /*n=*/5120,           /*k=*/buffer->up_dim); // MLP gate-proj
+            #ifdef PRINT_TIME
 
+            ms = stopCudaTimer(start, stop, "Time in MLP  gate proj", i);
+            #endif
+
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             launch_act(buffer->MLP_GATE, buffer->sequence_len * buffer->up_dim); // activation (e.g., SiLU) on gate
             launch_elem(buffer->MLP_UP, buffer->MLP_GATE, buffer->MLP_GATE_OUT, buffer->sequence_len * buffer->up_dim); // elementwise multiply: up * act(gate)
+            #ifdef PRINT_TIME
 
+            ms = stopCudaTimer(start, stop, "Time in activation and multiply", i);
+            #endif
+
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             proj(tensors["mlp.down_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->MLP_GATE_OUT, buffer->MLP_DOWN,      buffer->sequence_len, /*n=*/buffer->up_dim,  /*k=*/buffer->hidden_dim); // MLP down-proj
+            #ifdef PRINT_TIME
 
+            ms = stopCudaTimer(start, stop, "Time in down projection", i);
+            #endif
+
+
+            #ifdef PRINT_TIME
+            startCudaTimer(start, stop);
+            #endif
             launch_resadd(buffer->embeddings_out, buffer->MLP_DOWN, buffer->sequence_len * buffer->hidden_dim); // residual add: x += mlp_down
+            #ifdef PRINT_TIME
 
+            ms = stopCudaTimer(start, stop, "Time in final residual add", i);
+            #endif
         }
 
 
@@ -172,19 +305,42 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             
 
 
-                //kv cache
-                size_t pos = buffer->sequence_len - 1;                  
-                size_t layer_off = size_t(i)*buffer->context_size*buffer->hidden_dim_kv;
-                size_t dst_off   = layer_off + size_t(pos)*buffer->hidden_dim_kv;
+                // //kv cache
+                // size_t pos = buffer->sequence_len - 1;                  
+                // size_t layer_off = size_t(i) + buffer->context_size*buffer->hidden_dim_kv;
+                // size_t dst_off   = layer_off + size_t(pos)*buffer->hidden_dim_kv;
 
-                cudaMemcpy(&buffer->k_cache[dst_off], buffer->K, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
-                cudaMemcpy(&buffer->v_cache[dst_off], buffer->V, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
+                // cudaMemcpy(&buffer->k_cache[dst_off], buffer->K, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
+                // cudaMemcpy(&buffer->v_cache[dst_off], buffer->V, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
+
+                #ifdef PRINT_TIME
+                startCudaTimer(start, stop);
+                #endif
+                size_t pos = buffer->sequence_len - 1;                  
+                size_t layer_off = size_t(i) * buffer->hidden_dim_kv + pos * buffer->number_of_layers * buffer->hidden_dim_kv;
+                
+                cudaMemcpy(&buffer->k_cache[layer_off], buffer->K, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
+                cudaMemcpy(&buffer->v_cache[layer_off], buffer->V, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
+
+
+                #ifdef PRINT_TIME
+                float ms = stopCudaTimer(start, stop, "Layer copy", i);
+                #endif
 
                 cudaDeviceSynchronize();
                     
+                #ifdef PRINT_TIME
+                    startCudaTimer(start, stop);
+                #endif
                 // self‑attention 
                 int q_abs = buffer->sequence_len - 1;
-                launch_attn(buffer->Q, &buffer->k_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], &buffer->v_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], buffer->atten_out, /*mq=*/sequence_len_q, /*mkv=*/buffer->sequence_len, /*head_dim=*/buffer->head_dim, /*hidden=*/buffer->hidden_dim, /*hidden_kv=*/buffer->hidden_dim_kv, /*causal=*/0, q_abs); // SA(Q, Kcache, Vcache) → atten_out
+                // launch_attn(buffer->Q, &buffer->k_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], &buffer->v_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], buffer->atten_out, /*mq=*/sequence_len_q, /*mkv=*/buffer->sequence_len, /*head_dim=*/buffer->head_dim, /*hidden=*/buffer->hidden_dim, /*hidden_kv=*/buffer->hidden_dim_kv, /*causal=*/0, q_abs, i); // SA(Q, Kcache, Vcache) → atten_out
+                launch_attn(buffer->Q, buffer->k_cache, buffer->v_cache, buffer->atten_out, /*mq=*/sequence_len_q, /*mkv=*/buffer->sequence_len, /*head_dim=*/buffer->head_dim, /*hidden=*/buffer->hidden_dim, /*hidden_kv=*/buffer->hidden_dim_kv, /*causal=*/0, q_abs, i); // SA(Q, Kcache, Vcache) → atten_out
+
+                #ifdef PRINT_TIME
+                    cudaDeviceSynchronize();
+                    ms = stopCudaTimer(start, stop, "Time in attention", i);
+                #endif
 
                 // output projection 
                 proj(tensors["self_attn.o_proj.weight"][i], weights, buffer->o_proj_weights_h, buffer->o_proj_weights_d, buffer->o_proj_size, /*x=*/buffer->atten_out, /*y=*/buffer->out_proj, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/5120); // O-proj

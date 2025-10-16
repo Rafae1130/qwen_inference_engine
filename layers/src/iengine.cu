@@ -10,6 +10,8 @@
 #include <fstream>
 #include "utils.hh"
 
+#include <chrono>
+
 
 
 batch_metadata* create_new_sequence(
@@ -68,7 +70,7 @@ int main(){
 
 
 
-    size_t kvcache_size = 4* CONTEXT_SIZE * HIDDEN_DIM_KV * NUM_OF_LAYERS * 2 * sizeof(__nv_bfloat16); //for fixed batch of 4 for now
+    size_t kvcache_size = CONTEXT_SIZE * HIDDEN_DIM_KV * NUM_OF_LAYERS * 2 * sizeof(__nv_bfloat16); //for fixed batch of 4 for now
 
 
     //new prompt arrives
@@ -119,13 +121,74 @@ int main(){
         batch_metadata* new_seq_2 = create_new_sequence(1, h_token_ids_2, seq_len_2, tensors, weights);
 
 
+        __nv_bfloat16* cpu_kcache = (__nv_bfloat16*)malloc(kvcache_size/2);
+        __nv_bfloat16* cpu_vcache = (__nv_bfloat16*)malloc(kvcache_size/2);
+
+        std::cout << "k cache size: "<< kvcache_size << std::endl;
+
+        cudaStream_t io_stream;
+        cudaStreamCreate(&io_stream);
 
         while(1){
+            cudaEvent_t start, stop;
+            // cudaEventCreate(&start);
+            // cudaEventCreate(&stop);
+            // cudaEventRecord(start);
+
+            if(new_seq_1->state == decode){
+                // copy kv cache from disk to vram. 
+                cudaMemcpyAsync(new_seq_1->buffer->k_cache, cpu_kcache, kvcache_size/2, cudaMemcpyHostToDevice, io_stream);
+                cudaMemcpyAsync(new_seq_1->buffer->v_cache, cpu_vcache, kvcache_size/2, cudaMemcpyHostToDevice, io_stream);
+                cudaEventCreate(&start);
+                cudaEventCreate(&stop);
+                cudaEventRecord(start);
+                cudaMemcpy(new_seq_1->buffer->k_cache, cpu_kcache, kvcache_size/2, cudaMemcpyHostToDevice);
+                cudaMemcpy(new_seq_1->buffer->v_cache, cpu_vcache, kvcache_size/2, cudaMemcpyHostToDevice);
+                cudaDeviceSynchronize();
+
+                cudaEventRecord(stop);
+                float ms = 0;
+                cudaEventSynchronize(stop);
+                cudaEventElapsedTime(&ms, start, stop);
+
+                std::cout<< "Time in one copy: "<< ms << " ms" << std::endl;
+                cudaEventDestroy(start);
+                cudaEventDestroy(stop);
+
+            }
+
+            // cudaEventCreate(&start);
+            // cudaEventCreate(&stop);
+            // cudaEventRecord(start);
+
             int out_token_1 = llm(new_seq_1, tensors, weights);
-            std::cout << "out-token-1 " << out_token_1 << std::endl;
+            std::cout << "out-token-1: " << out_token_1 << std::endl;
             new_seq_1->step = new_seq_1->step + 1;
             new_seq_1->generated_token = out_token_1;
             new_seq_1->state = decode;
+
+            // cudaMemcpyAsync(cpu_kcache, new_seq_1->buffer->k_cache, kvcache_size/2, cudaMemcpyDeviceToHost, io_stream);
+            // cudaMemcpyAsync(cpu_vcache, new_seq_1->buffer->v_cache, kvcache_size/2, cudaMemcpyDeviceToHost, io_stream);
+            
+            cudaMemcpy(cpu_kcache, new_seq_1->buffer->k_cache, kvcache_size/2, cudaMemcpyDeviceToHost);
+            cudaMemcpy(cpu_vcache, new_seq_1->buffer->v_cache, kvcache_size/2, cudaMemcpyDeviceToHost);
+            cudaDeviceSynchronize();
+            
+
+            // cudaEventRecord(stop);
+            // float ms = 0;
+            // cudaEventSynchronize(stop);
+            // cudaEventElapsedTime(&ms, start, stop);
+
+            // std::cout<< "Time in one loop: "<< ms << " ms" << std::endl;
+            // cudaEventDestroy(start);
+            // cudaEventDestroy(stop);
+            
+            
+            // cudaDeviceSynchronize();
+            //copy the kv cache to disk
+
+
 
 
             int out_token_2 = llm(new_seq_2, tensors, weights);
@@ -150,7 +213,8 @@ int main(){
         destroy_model_buffers(*new_seq_2->buffer);
         free(new_seq_1);
         free(new_seq_2);
-
+        free(cpu_kcache);
+        free(cpu_vcache);
     }
 
 

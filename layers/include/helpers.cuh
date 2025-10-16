@@ -95,11 +95,11 @@ void launch_matmul( __nv_bfloat16* A,  __nv_bfloat16* B, __nv_bfloat16* C,
 
 void launch_attn(__nv_bfloat16* Q, __nv_bfloat16* K, __nv_bfloat16* V,
                                __nv_bfloat16* out, size_t mq, size_t mkv, size_t head_dim,
-                               size_t hidden, size_t hidden_kv, int causal, size_t q_abs_base) {
+                               size_t hidden, size_t hidden_kv, int causal, size_t q_abs_base, int layer_id) {
     int blocks = hidden / head_dim; // nheads
     int threads = head_dim;
     size_t smem = mkv * sizeof(float);
-    selfattention<<<blocks, threads, smem>>>(Q, K, V, out, mq, mkv, head_dim, hidden, hidden_kv, causal, q_abs_base);
+    selfattention<<<blocks, threads, smem>>>(Q, K, V, out, mq, mkv, head_dim, hidden, hidden_kv, causal, q_abs_base, layer_id);
 }
 
  void proj(const tensor& t, std::ifstream& f,

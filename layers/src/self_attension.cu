@@ -5,7 +5,7 @@
 //the K_matrix and the V_matrix are the KV cache.
 //there needs to be two seq_len, one for Q and another for KV, as Q can be multiple tokens in first 
 //pass but afterwards it will be only one token. But KV caches will keep growing.
-__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, __nv_bfloat16*V_matrix, __nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base){
+__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, __nv_bfloat16*V_matrix, __nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base, int layer_id){
 
     // int idx = threadIdx.x + blockDim.x*blockIdx.x;
 
@@ -27,7 +27,11 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
             //k_tok * kv_dim: k_tok selects the row i.e. token. And since dimension of K is 1024, we take a jump by kv_dim for next token. 
             //(blockIdx.x/5)*head_dim: within the row selected by k_tok * kv_dim, (blockIdx.x/5)*head_dim selects which head of K the currect block works on. Since there will be 5 k blocks per head block, we divide by 5. And multiply by head_dim to move to next head.
             //threadIdx.x: there will be 128 elements in each head, which will be computed in parallel as 128 threads will launched for each block.
-            float k_val = __bfloat162float(K_matrix[k_tok * kv_dim + (blockIdx.x/5)*head_dim+ threadIdx.x]);
+            int head_id  = blockIdx.x / 5;      // same as before
+            int token_id = k_tok;
+            int num_layers = 40;
+            float k_val = __bfloat162float(K_matrix[((token_id * num_layers + layer_id) * kv_dim) + head_id * head_dim + threadIdx.x]);
+
             buffer[threadIdx.x] = q_val * k_val;
 
             __syncthreads();
@@ -49,14 +53,6 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
             __syncthreads();
         }
 
-// if (threadIdx.x == 0 && blockIdx.x == 0 && q_tok == 0) {
-//     printf("RAW scores before masking (first 10): ");
-//     for(int k = 0; k < min(10, seq_len_kv); k++) {
-//         printf("%.4f ", score_row[k]);
-//     }
-//     printf("\n");
-// }
-
         int q_abs = q_abs_base + q_tok;
         if (causal && threadIdx.x == 0) {
             for (int k_tok = 0; k_tok < seq_len_kv; k_tok++){
@@ -64,23 +60,7 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
             }
         }
 
-        // //masking
-        // if(causal){
-        //     if (threadIdx.x == 0) {
-        //         for(int k_tok = 0; k_tok < seq_len_kv; k_tok++){
-        //             if(k_tok > q_tok){
-        //                 score_row[k_tok] = -1e9f;
-        //             }
-        //         }
-        //     }
-        // }
 
-        // if (threadIdx.x == 0 && blockIdx.x == 0) {
-        //     printf("q_tok=%d, RAW scores after masking (first 10): ", q_tok);
-        //     int lim = min(10, seq_len_kv);
-        //     for (int k = 0; k < lim; ++k) printf("%.4f ", score_row[k]);
-        //     printf("\n");
-        // }
 
         //softmax(this is serial and only one thread is working here)
         if (threadIdx.x == 0) {
@@ -99,19 +79,17 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
         }
         __syncthreads();
 
-
-        // if (threadIdx.x==0 && blockIdx.x==0) {
-        //     float sum=0; int arg=-1; float best=-1e30;
-        //     for (int k=0;k<seq_len_kv;++k){ sum+=score_row[k]; if(score_row[k]>best){best=score_row[k];arg=k;}}
-        //     printf("q_tok=%d softmax_sum=%.6f argmax=%d\n", q_tok, sum, arg);
-        // }
-
         
         //multiply with V
         if (threadIdx.x < head_dim) {
             float out_val = 0.f;
             for (int k_tok = 0; k_tok < seq_len_kv; k_tok++) {
-                float v_val = __bfloat162float(V_matrix[k_tok * kv_dim + (blockIdx.x/5) * head_dim + threadIdx.x ]);
+                // float v_val = __bfloat162float(V_matrix[k_tok * kv_dim + (blockIdx.x/5) * head_dim + threadIdx.x ]);
+                int head_id  = blockIdx.x / 5;      // same as before
+                int token_id = k_tok;
+                int num_layers = 40;
+                float v_val = __bfloat162float(V_matrix[((token_id * num_layers + layer_id) * kv_dim) + head_id * head_dim + threadIdx.x]);
+                    
                 out_val += score_row[k_tok] * v_val;
             }
 
