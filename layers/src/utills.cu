@@ -45,8 +45,8 @@ void initialize_model_buffers(ModelBuffers &buf, int *h_token_ids,
     
     // KV cache
     size_t kv_cache_size = size_t(buf.context_size) * size_t(buf.hidden_dim_kv) * size_t(buf.number_of_layers);
-    cudaMalloc((void **)&buf.k_cache, kv_cache_size * sizeof(__nv_bfloat16));
-    cudaMalloc((void **)&buf.v_cache, kv_cache_size * sizeof(__nv_bfloat16));
+    // cudaMalloc((void **)&buf.k_cache, kv_cache_size * sizeof(__nv_bfloat16));
+    // cudaMalloc((void **)&buf.v_cache, kv_cache_size * sizeof(__nv_bfloat16));
     // Launch embedding kernel
     int threads = 256;
     int blocks = (buf.sequence_len + threads - 1) / threads;

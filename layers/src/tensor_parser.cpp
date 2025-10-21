@@ -35,14 +35,14 @@ std::vector<tensor> parsed_tensors(){
     size_t global_offset = 0;
 
     std::vector<std::string> files = {
-        "/mnt/data/Qwen3-14B/model-00001-of-00008.safetensors",
-        "/mnt/data/Qwen3-14B/model-00002-of-00008.safetensors",
-        "/mnt/data/Qwen3-14B/model-00003-of-00008.safetensors",
-        "/mnt/data/Qwen3-14B/model-00004-of-00008.safetensors",
-        "/mnt/data/Qwen3-14B/model-00005-of-00008.safetensors",
-        "/mnt/data/Qwen3-14B/model-00006-of-00008.safetensors",
-        "/mnt/data/Qwen3-14B/model-00007-of-00008.safetensors",
-        "/mnt/data/Qwen3-14B/model-00008-of-00008.safetensors"
+        "/mnt/data/rafaedata/Qwen3-14B/model-00001-of-00008.safetensors",
+        "/mnt/data/rafaedata/Qwen3-14B/model-00002-of-00008.safetensors",
+        "/mnt/data/rafaedata/Qwen3-14B/model-00003-of-00008.safetensors",
+        "/mnt/data/rafaedata/Qwen3-14B/model-00004-of-00008.safetensors",
+        "/mnt/data/rafaedata/Qwen3-14B/model-00005-of-00008.safetensors",
+        "/mnt/data/rafaedata/Qwen3-14B/model-00006-of-00008.safetensors",
+        "/mnt/data/rafaedata/Qwen3-14B/model-00007-of-00008.safetensors",
+        "/mnt/data/rafaedata/Qwen3-14B/model-00008-of-00008.safetensors"
       };
     
     // std::vector<char> buffer(10*1024*1024);

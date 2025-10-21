@@ -3,6 +3,11 @@
 #include <cuda.h>
 #include <cuda_bf16.h>
 #include <fstream>
+
+#include "iengine.cuh"
+
+struct page_table_struct;
+typedef struct page_table_struct page_table;
 struct tensor;
 __global__ void embedding_matrix_func(__nv_bfloat16 *embeddings_out, __nv_bfloat16 *embeddings_matrix,int *token_ids, size_t embedding_dim, size_t sequence_len);
 // __global__ void matrix_mul(const __nv_bfloat16 *A, const __nv_bfloat16 *B, __nv_bfloat16*C, int M, int N, int K, int lda, int ldb, int ldc);
@@ -13,7 +18,7 @@ __global__ void qkNorm(__nv_bfloat16*qk, __nv_bfloat16*norm_weigths ,int head_di
 
 
 __global__ void RoPE(float *cos_values, float *sin_values, __nv_bfloat16*embedded_matrix, int seq_len, int head_dim, int embedding_dim, int num_heads);
-__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, __nv_bfloat16*V_matrix,__nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base, int layer_id);
+__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, __nv_bfloat16*V_matrix,__nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base, int layer_id, page_table* kv_cache_seq1, int page_size);
 __global__ void activation( __nv_bfloat16 *matrix, size_t size);
 
 __global__ void residual_add(__nv_bfloat16* __restrict__ mat_a, __nv_bfloat16* __restrict__ mat_b, size_t num_of_elements);
