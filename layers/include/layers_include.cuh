@@ -5,7 +5,10 @@
 #include <fstream>
 
 #include "iengine.cuh"
+#include "utils.hh"
 
+
+struct ModelBuffers;
 struct page_table_struct;
 typedef struct page_table_struct page_table;
 struct tensor;
@@ -46,4 +49,6 @@ int find_max(const __nv_bfloat16* array, int size);
 
 inline void log_cache_host_range( std::ofstream& out,  const __nv_bfloat16* d_cache_layer_base, int hidden_dim_kv, int layer_idx,  const char* tag,  int start_pos,  int end_pos,  int max_cols);
 
+void kv_copy_layer_to_cache_prefill(ModelBuffers* buffer, int i, page_table* kv_cache_seq1, int page_size);
 
+void kv_copy_layer_to_cache_decode(ModelBuffers* buffer, int i, page_table* kv_cache_seq1, int page_size);

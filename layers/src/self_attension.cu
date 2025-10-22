@@ -114,7 +114,7 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
             for (int k_tok = 0; k_tok < seq_len_kv; k_tok++) {
                 // float v_val = __bfloat162float(V_matrix[k_tok * kv_dim + (blockIdx.x/5) * head_dim + threadIdx.x ]);
                 int head_id  = blockIdx.x / 5;      // same as before
-                int token_id = k_tok;
+                // int token_id = k_tok;
                 int num_layers = 40;
 
                 int page_idx       = k_tok / page_size;

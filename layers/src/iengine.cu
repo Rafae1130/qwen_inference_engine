@@ -194,8 +194,8 @@ int main(){
         
         // kv_cache_seq1->page_allocated++;
 
-        new_seq_1->buffer->k_cache = kv_cache_seq1->k_page_ptr;
-        new_seq_1->buffer->v_cache = kv_cache_seq1->v_page_ptr;
+        // new_seq_1->buffer->k_cache = kv_cache_seq1->k_page_ptr;
+        // new_seq_1->buffer->v_cache = kv_cache_seq1->v_page_ptr;
 
 
 
@@ -220,7 +220,7 @@ int main(){
         cudaStreamCreate(&io_stream);
 
         while(1){
-            cudaEvent_t start, stop;
+            // cudaEvent_t start, stop;
             // cudaEventCreate(&start);
             // cudaEventCreate(&stop);
             // cudaEventRecord(start);
@@ -300,9 +300,10 @@ int main(){
 
 
         if (weights.is_open()) weights.close();
-        
+        free_page_list(kv_cache_seq1);
         destroy_model_buffers(*new_seq_1->buffer);
         // destroy_model_buffers(*new_seq_2->buffer);
+
         free(new_seq_1);
         // free(new_seq_2);
         // free(cpu_kcache);

@@ -4,14 +4,10 @@
 #include "tensor_parser.hh"
 #include <fstream>
 #include <iostream>
-
-
 #include <vector>
 #include <algorithm>
 #include <cstdio>
 #include <cuda_bf16.h>
-
-
 #include <iomanip>
 #include <utils.hh>
 #include <helpers.cuh>
@@ -19,7 +15,8 @@
 
 
 
-#define PRINT_TIME
+
+// #define PRINT_TIME
 
 inline void startCudaTimer(cudaEvent_t &start, cudaEvent_t &stop) {
     cudaEventCreate(&start);
@@ -41,6 +38,7 @@ inline float stopCudaTimer(cudaEvent_t &start, cudaEvent_t &stop, const char* la
     cudaEventDestroy(stop);
     return ms;
 }
+
 
 
 
@@ -91,113 +89,11 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             launch_rope(buffer->cos_values_d, buffer->sin_values_d, buffer->Q, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim, buffer->num_of_qheads); // Apply RoPE to Q for all query heads
             launch_rope(buffer->cos_values_d, buffer->sin_values_d, buffer->K, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim_kv, buffer->num_of_kvheads); // Apply RoPE to K for all KV heads
 
+            kv_copy_layer_to_cache_prefill(buffer, /*i=*/(int)i, kv_cache_seq1, /*page_size=*/page_size);
 
-        
-            
             // #ifdef PRINT_TIME
-            // float ms = stopCudaTimer(start, stop, "Time in kv_cache copy", i);
+            // stopCudaTimer(start, stop, "KV paged copy", i);
             // #endif
-
-            const int tokens_per_page = page_size;                          // <-- tokens per page
-            const size_t vec_elems     = (size_t)buffer->hidden_dim_kv;
-            const size_t pitch_bytes   = vec_elems * sizeof(__nv_bfloat16);
-            const size_t width_bytes   = pitch_bytes;                 // copy a full token vector per row
-
-            int sequence_len = buffer->sequence_len;
-
-            #ifdef PRINT_TIME
-            startCudaTimer(start, stop);
-            #endif
-
-            if (sequence_len <= tokens_per_page) {
-                // Fast path: fits in the first (flat) cache or first page
-                // If you still want to keep the old flat cache for small seqs:
-                // dpitch/spitch are both the per-token byte span
-                const size_t kv_dim      = buffer->hidden_dim_kv;
-                const size_t dpitch = (size_t)buffer->number_of_layers * kv_dim * sizeof(__nv_bfloat16);;
-                const size_t spitch = kv_dim * sizeof(__nv_bfloat16);;
-                const int height    = sequence_len;                   // rows = tokens
-
-                // Copy K
-                cudaMemcpy2D(
-                    /* dst    */ &buffer->k_cache[i * buffer->hidden_dim_kv], // if you still maintain a flat cache
-                    /* dpitch */ dpitch,
-                    /* src    */ buffer->K,
-                    /* spitch */ spitch,
-                    /* width  */ width_bytes,
-                    /* height */ height,
-                    /* kind   */ cudaMemcpyDeviceToDevice
-                );
-
-                // Copy V
-                cudaMemcpy2D(
-                    &buffer->v_cache[i * buffer->hidden_dim_kv],
-                    dpitch,
-                    buffer->V,
-                    spitch,
-                    width_bytes,
-                    height,
-                    cudaMemcpyDeviceToDevice
-                );
-            } else {
-                // Paged path
-                // How many pages do we need?
-                const int pages_required = (sequence_len + tokens_per_page - 1) / tokens_per_page;
-
-                page_table* temp = kv_cache_seq1; // head page
-                if (!temp) { /* handle null / allocate first page */ }
-
-                int copied_tokens = 0;
-                for (int k = 0; k < pages_required; k++) {
-                    if (!temp) {
-                        // You ran out of pre-allocated pages — allocate or error out
-                        // allocate_next_page(&temp, tokens_per_page * vec_elems);
-                        // or: throw / return
-                        break;
-                    }
-
-                    // How many tokens to write into this page
-                    int remaining      = sequence_len - copied_tokens;
-                    int this_page_rows = (remaining < tokens_per_page) ? remaining : tokens_per_page;
-
-                    const size_t kv_dim      = buffer->hidden_dim_kv;                // 1024
-                    const size_t src_pitch   = kv_dim * sizeof(__nv_bfloat16);       // row = kv vector
-                    const size_t dst_pitch   = (size_t)buffer->number_of_layers * kv_dim * sizeof(__nv_bfloat16); // jump over all layers per token
-                    const size_t width_bytes = src_pitch;
-
-                  
-                    // K
-                    cudaMemcpy2D(
-                        /* dst    */ temp->k_page_ptr + (size_t)i * kv_dim,  // start at this layer inside the [layer] slab
-                        /* dpitch */ dst_pitch,                               // next token jumps over all layers*kv
-                        /* src    */ buffer->K + (size_t)copied_tokens * kv_dim,   // source token t base
-                        /* spitch */ src_pitch,                               // next token in src is just +kv
-                        /* width  */ width_bytes,                             // copy one kv vector
-                        /* height */ this_page_rows,                          // number of tokens in this page
-                        /* kind   */ cudaMemcpyDeviceToDevice
-                    );
-
-                    // V
-                    cudaMemcpy2D(
-                        temp->v_page_ptr + (size_t)i * kv_dim,
-                        dst_pitch,
-                        buffer->V + (size_t)copied_tokens * kv_dim,
-                        src_pitch,
-                        width_bytes,
-                        this_page_rows,
-                        cudaMemcpyDeviceToDevice
-                    );
-
-                    // Bookkeeping
-                    temp->page_allocated = this_page_rows;  // optional
-                    copied_tokens += this_page_rows;
-                    temp = temp->ptr_to_next_page;
-                }
-            }
-
-            #ifdef PRINT_TIME
-            stopCudaTimer(start, stop, "KV paged copy", i);
-            #endif
 
 
             //self attention
@@ -208,10 +104,6 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             #ifdef PRINT_TIME
             stopCudaTimer(start, stop, "Time in attention", i);
             #endif
-            
-            
-            
-            
             
             //outut projection self attention
             #ifdef PRINT_TIME
@@ -379,63 +271,11 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
 
 
                 // //kv cache
-                // size_t pos = buffer->sequence_len - 1;                  
-                // size_t layer_off = size_t(i) + buffer->context_size*buffer->hidden_dim_kv;
-                // size_t dst_off   = layer_off + size_t(pos)*buffer->hidden_dim_kv;
-
-                // cudaMemcpy(&buffer->k_cache[dst_off], buffer->K, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
-                // cudaMemcpy(&buffer->v_cache[dst_off], buffer->V, buffer->hidden_dim_kv*sizeof(__nv_bfloat16), cudaMemcpyDeviceToDevice);
-
                 #ifdef PRINT_TIME
                 startCudaTimer(start, stop);
                 #endif
 
-                size_t pos = buffer->sequence_len - 1;
-
-
-                int page_idx = pos / page_size;
-                int offset_in_page = pos % page_size;
-
-                // walk to the correct page
-                page_table* page = kv_cache_seq1;
-                for (int p = 0; p < page_idx && page; ++p)
-                    page = page->ptr_to_next_page;
-                if (!page) {
-                    fprintf(stderr, "Error: Page %d not allocated (pos=%zu, page_size=%d)\n", page_idx, pos, page_size);
-                    page_table* new_page = kv_cache_seq1;
-                    for (int p = 0; p < page_idx -1; ++p)
-                        new_page = new_page->ptr_to_next_page;
-                    new_page->ptr_to_next_page = create_page_list(1);
-                    page = new_page->ptr_to_next_page;
-                    int elements_per_page =  page_size * buffer->number_of_layers * (size_t)buffer->hidden_dim_kv;;
-                    allocate_page_buffers(page, elements_per_page);
-                    if(page){
-                        std::cout << "new page allocated" << std::endl;
-                    }
-
-                }
-
-
-
-                // Safety check
-                if (!page) {
-                    fprintf(stderr, "Critical error: Failed to allocate/access page\n");
-                    return 0;
-                }
-
-                // compute offset inside that page
-                size_t layer_off = (size_t)offset_in_page * buffer->number_of_layers * buffer->hidden_dim_kv  // jump to token
-                                + (size_t)i * buffer->hidden_dim_kv;   
-
-                std::cout <<"before cache copy in decode" << std::endl;
-                // write into the correct page’s memory
-                cudaMemcpy(&page->k_page_ptr[layer_off], buffer->K,
-                        buffer->hidden_dim_kv * sizeof(__nv_bfloat16),
-                        cudaMemcpyDeviceToDevice);
-
-                cudaMemcpy(&page->v_page_ptr[layer_off], buffer->V,
-                        buffer->hidden_dim_kv * sizeof(__nv_bfloat16),
-                        cudaMemcpyDeviceToDevice);
+                kv_copy_layer_to_cache_decode(buffer, /*i=*/(int)i, kv_cache_seq1, /*page_size=*/page_size);
 
                 #ifdef PRINT_TIME
                 float ms = stopCudaTimer(start, stop, "Layer copy (paged)", i);
