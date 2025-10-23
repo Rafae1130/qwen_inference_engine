@@ -48,7 +48,7 @@ typedef struct page_table_struct{
 }page_table;
 
 
-int llm(batch_metadata *new_seq, std::unordered_map<std::string, std::vector<tensor>> tensors, std::ifstream &weights, page_table* kv_cache_seq1, int page_size);
+int llm(batch_metadata *new_seq, std::unordered_map<std::string, std::vector<tensor>> tensors, std::ifstream &weights, page_table* kv_cache_seq1, int page_size, __nv_bfloat16* g_gpu_weights_buffer);
 
 void free_page_list(page_table* head);
 void allocate_page_buffers(page_table* node, size_t elems_per_page);

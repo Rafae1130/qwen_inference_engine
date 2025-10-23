@@ -12,11 +12,36 @@ static inline dim3 grid2D(int m, int k, int bx=16, int by=16) {
 }
 static inline dim3 block2D(int bx=16, int by=16){ return dim3(bx, by); }
 
+
+
+
+// Assign pointer to specific tensor location in the unified GPU buffer
 template<class T>
-void load_weight(const tensor& t, std::ifstream& f, T* h, T* d, size_t elems) {
-    weights_read(t, f, h);
-    cudaMemcpy(d, h, elems*sizeof(T), cudaMemcpyHostToDevice);
+void assign_weight_pointer(const tensor& t, T*& d, __nv_bfloat16* g_gpu_weights_buffer ) {
+    if (g_gpu_weights_buffer == nullptr) {
+        std::cout << "Error: GPU weights buffer not initialized. Call load_all_weights_to_gpu first.\n";
+        return;
+    }
+    
+    size_t offset_bytes = t.data_offsets[0];
+    
+    // Calculate pointer offset
+    d = reinterpret_cast<T*>(reinterpret_cast<char*>(g_gpu_weights_buffer) + offset_bytes);
 }
+
+// Optional: Original load_weight function updated to use the new approach
+template<class T>
+void load_weight(const tensor& t, std::ifstream& f, T* h, T*& d, size_t elems, __nv_bfloat16* g_gpu_weights_buffer) {
+    assign_weight_pointer(t, d, g_gpu_weights_buffer);
+}
+
+
+
+// template<class T>
+// void load_weight(const tensor& t, std::ifstream& f, T* h, T* d, size_t elems) {
+//     weights_read(t, f, h);
+//     cudaMemcpy(d, h, elems*sizeof(T), cudaMemcpyHostToDevice);
+// }
 
 void launch_rms(__nv_bfloat16* x, __nv_bfloat16* w, __nv_bfloat16* y,
                               size_t hidden, size_t seqlen) {
@@ -106,8 +131,8 @@ void launch_attn(__nv_bfloat16* Q, __nv_bfloat16* K, __nv_bfloat16* V,
  void proj(const tensor& t, std::ifstream& f,
                         __nv_bfloat16* w_h, __nv_bfloat16* w_d, size_t w_elems,
                         __nv_bfloat16* x, __nv_bfloat16* y,
-                        int m, int n, int k) {
-    load_weight(t, f, w_h, w_d, w_elems);
+                        int m, int n, int k, __nv_bfloat16* g_gpu_weights_buffer) {
+    load_weight(t, f, w_h, w_d, w_elems, g_gpu_weights_buffer);
     launch_matmul(x, w_d, y, m, n, k);
 }
 

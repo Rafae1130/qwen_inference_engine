@@ -43,7 +43,7 @@ inline float stopCudaTimer(cudaEvent_t &start, cudaEvent_t &stop, const char* la
 
 
 
-int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<tensor>> tensors, std::ifstream &weights, page_table *kv_cache_seq1, int page_size){
+int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<tensor>> tensors, std::ifstream &weights, page_table *kv_cache_seq1, int page_size, __nv_bfloat16* g_gpu_weights_buffer){
 
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
@@ -61,28 +61,28 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             std::cout << "loop iteration: " << i << std::endl;
 
             //normalization block
-            load_weight(tensors["input_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim);
+            load_weight(tensors["input_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim, g_gpu_weights_buffer);
             launch_rms(buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, buffer->sequence_len);
 
             //projections - Q
             proj(tensors["self_attn.q_proj.weight"][i], weights,
                 buffer->q_proj_weights_h, buffer->q_proj_weights_d, buffer->q_proj_size,
-                buffer->rms_out, buffer->Q, buffer->sequence_len, 5120, 5120);    // Load q_proj weights (H->D) and compute Q = rms_out · W_q  [m=seqlen, n=hidden=5120, k=hidden=5120]
+                buffer->rms_out, buffer->Q, buffer->sequence_len, 5120, 5120, g_gpu_weights_buffer);    // Load q_proj weights (H->D) and compute Q = rms_out · W_q  [m=seqlen, n=hidden=5120, k=hidden=5120]
             //projections - K
             proj(tensors["self_attn.k_proj.weight"][i], weights,
                 buffer->kv_proj_weights_h, buffer->kv_proj_weights_d, buffer->kv_proj_size,
-                buffer->rms_out, buffer->K, buffer->sequence_len, 5120, 1024);    // Load k_proj weights (H->D) and compute K = rms_out · W_k  [m=seqlen, n=hidden=5120, k=kv=1024]
+                buffer->rms_out, buffer->K, buffer->sequence_len, 5120, 1024, g_gpu_weights_buffer);    // Load k_proj weights (H->D) and compute K = rms_out · W_k  [m=seqlen, n=hidden=5120, k=kv=1024]
             //projections - V
             proj(tensors["self_attn.v_proj.weight"][i], weights,
                 buffer->kv_proj_weights_h, buffer->kv_proj_weights_d, buffer->kv_proj_size,
-                buffer->rms_out, buffer->V, buffer->sequence_len, 5120, 1024);    // Load v_proj weights (H->D) and compute V = rms_out · W_v  [m=seqlen, n=hidden=5120, k=kv=1024]
+                buffer->rms_out, buffer->V, buffer->sequence_len, 5120, 1024, g_gpu_weights_buffer);    // Load v_proj weights (H->D) and compute V = rms_out · W_v  [m=seqlen, n=hidden=5120, k=kv=1024]
 
             // q_norm
-            load_weight(tensors["self_attn.q_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim);
+            load_weight(tensors["self_attn.q_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim, g_gpu_weights_buffer);
             launch_qknorm(buffer->Q, buffer->qk_norm_weights_d, buffer->head_dim, buffer->sequence_len, buffer->hidden_dim, buffer->num_of_qheads);
 
             // k_norm
-            load_weight(tensors["self_attn.k_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim);
+            load_weight(tensors["self_attn.k_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim, g_gpu_weights_buffer);
             launch_qknorm(buffer->K, buffer->qk_norm_weights_d, buffer->head_dim, buffer->sequence_len, buffer->hidden_dim_kv, buffer->num_of_kvheads);
 
             // RoPE
@@ -109,7 +109,7 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             #ifdef PRINT_TIME
             startCudaTimer(start, stop);
             #endif
-            proj(tensors["self_attn.o_proj.weight"][i], weights, buffer->o_proj_weights_h, buffer->o_proj_weights_d, buffer->o_proj_size, buffer->atten_out, buffer->out_proj, buffer->sequence_len, /*n=*/5120, /*k=*/5120); // output projection (O proj)
+            proj(tensors["self_attn.o_proj.weight"][i], weights, buffer->o_proj_weights_h, buffer->o_proj_weights_d, buffer->o_proj_size, buffer->atten_out, buffer->out_proj, buffer->sequence_len, /*n=*/5120, /*k=*/5120, g_gpu_weights_buffer); // output projection (O proj)
             #ifdef PRINT_TIME
 
             stopCudaTimer(start, stop, "Time in o_projction", i);
@@ -129,7 +129,7 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             #ifdef PRINT_TIME
             startCudaTimer(start, stop);
             #endif
-            load_weight(tensors["post_attention_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim); // load post-attn RMSNorm weights to device
+            load_weight(tensors["post_attention_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim, g_gpu_weights_buffer); // load post-attn RMSNorm weights to device
             launch_rms(buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, buffer->sequence_len); // post-attention RMSNorm
             
             #ifdef PRINT_TIME
@@ -141,7 +141,7 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             #ifdef PRINT_TIME
             startCudaTimer(start, stop);
             #endif
-            proj(tensors["mlp.up_proj.weight"][i],   weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->rms_out,      buffer->MLP_UP,        buffer->sequence_len, /*n=*/5120,           /*k=*/buffer->up_dim); // MLP up-proj
+            proj(tensors["mlp.up_proj.weight"][i],   weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->rms_out,      buffer->MLP_UP,        buffer->sequence_len, /*n=*/5120,           /*k=*/buffer->up_dim, g_gpu_weights_buffer); // MLP up-proj
             #ifdef PRINT_TIME
 
             stopCudaTimer(start, stop, "Time in MLP up proj", i);
@@ -151,7 +151,7 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             #ifdef PRINT_TIME
             startCudaTimer(start, stop);
             #endif
-            proj(tensors["mlp.gate_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->rms_out,      buffer->MLP_GATE,      buffer->sequence_len, /*n=*/5120,           /*k=*/buffer->up_dim); // MLP gate-proj
+            proj(tensors["mlp.gate_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->rms_out,      buffer->MLP_GATE,      buffer->sequence_len, /*n=*/5120,           /*k=*/buffer->up_dim, g_gpu_weights_buffer); // MLP gate-proj
             #ifdef PRINT_TIME
 
             stopCudaTimer(start, stop, "Time in MLP  gate proj", i);
@@ -170,7 +170,7 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             #ifdef PRINT_TIME
             startCudaTimer(start, stop);
             #endif
-            proj(tensors["mlp.down_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->MLP_GATE_OUT, buffer->MLP_DOWN,      buffer->sequence_len, /*n=*/buffer->up_dim,  /*k=*/buffer->hidden_dim); // MLP down-proj
+            proj(tensors["mlp.down_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, buffer->MLP_GATE_OUT, buffer->MLP_DOWN,      buffer->sequence_len, /*n=*/buffer->up_dim,  /*k=*/buffer->hidden_dim, g_gpu_weights_buffer); // MLP down-proj
             #ifdef PRINT_TIME
 
             stopCudaTimer(start, stop, "Time in down projection", i);
@@ -189,11 +189,11 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
 
 
         // final RMSNorm before logits
-        load_weight(tensors["norm.weight"][0], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim);  // load γ
+        load_weight(tensors["norm.weight"][0], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim, g_gpu_weights_buffer);  // load γ
         launch_rms (buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, buffer->sequence_len); // y = rmsnorm(x)
 
         // load logits (W_vocab)
-        load_weight(tensors["logits"][0], weights, buffer->logits_weights_h, buffer->logits_weights_d, buffer->logtis_shape);          
+        load_weight(tensors["logits"][0], weights, buffer->logits_weights_h, buffer->logits_weights_d, buffer->logtis_shape, g_gpu_weights_buffer);          
 
         // pick last token activation
         copy_last_vocab_vec(buffer->rms_out, buffer->last_x, buffer->hidden_dim, buffer->sequence_len);                                            
@@ -237,29 +237,29 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             for(size_t  i =0; i < buffer->number_of_layers; i++){
                 // std::cout << "loop iteration: " << i << std::endl;
                 // rms norm (input LN for decode token)
-                load_weight(tensors["input_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim);
+                load_weight(tensors["input_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim, g_gpu_weights_buffer);
                 launch_rms(buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, sequence_len_q);
                 e = cudaGetLastError(); if (e != cudaSuccess) { fprintf(stderr, "Kernel rmsNorm decode: %s\n", cudaGetErrorString(e)); return 0; } cudaDeviceSynchronize();
 
                 // Q projection
                 proj(tensors["self_attn.q_proj.weight"][i], weights, buffer->q_proj_weights_h, buffer->q_proj_weights_d, buffer->q_proj_size,
-                    /*x=*/buffer->rms_out, /*y=*/buffer->Q, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/5120);
+                    /*x=*/buffer->rms_out, /*y=*/buffer->Q, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/5120, g_gpu_weights_buffer);
                 e = cudaGetLastError(); if (e != cudaSuccess) { fprintf(stderr, "Kernel matmul: %s\n", cudaGetErrorString(e)); return 0; } cudaDeviceSynchronize();
 
                 // K projection
                 proj(tensors["self_attn.k_proj.weight"][i], weights, buffer->kv_proj_weights_h, buffer->kv_proj_weights_d, buffer->kv_proj_size,
-                    /*x=*/buffer->rms_out, /*y=*/buffer->K, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/1024);
+                    /*x=*/buffer->rms_out, /*y=*/buffer->K, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/1024, g_gpu_weights_buffer);
 
                 // V projection
                 proj(tensors["self_attn.v_proj.weight"][i], weights, buffer->kv_proj_weights_h, buffer->kv_proj_weights_d, buffer->kv_proj_size,
-                    /*x=*/buffer->rms_out, /*y=*/buffer->V, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/1024);
+                    /*x=*/buffer->rms_out, /*y=*/buffer->V, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/1024, g_gpu_weights_buffer);
 
                 // q_norm
-                load_weight(tensors["self_attn.q_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim);
+                load_weight(tensors["self_attn.q_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim, g_gpu_weights_buffer);
                 launch_qknorm(buffer->Q, buffer->qk_norm_weights_d, buffer->head_dim, sequence_len_q, buffer->hidden_dim, buffer->num_of_qheads);
 
                 // k_norm
-                load_weight(tensors["self_attn.k_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim);
+                load_weight(tensors["self_attn.k_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim, g_gpu_weights_buffer);
                 launch_qknorm(buffer->K, buffer->qk_norm_weights_d, buffer->head_dim, sequence_len_q, buffer->hidden_dim_kv, buffer->num_of_kvheads);
 
                 // RoPE (single position = buffer->sequence_len - 1)
@@ -297,20 +297,20 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
                 #endif
 
                 // output projection 
-                proj(tensors["self_attn.o_proj.weight"][i], weights, buffer->o_proj_weights_h, buffer->o_proj_weights_d, buffer->o_proj_size, /*x=*/buffer->atten_out, /*y=*/buffer->out_proj, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/5120); // O-proj
+                proj(tensors["self_attn.o_proj.weight"][i], weights, buffer->o_proj_weights_h, buffer->o_proj_weights_d, buffer->o_proj_size, /*x=*/buffer->atten_out, /*y=*/buffer->out_proj, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/5120, g_gpu_weights_buffer); // O-proj
 
                 // residual add
                 launch_resadd(buffer->embeddings_out, buffer->out_proj, /*n=*/sequence_len_q * buffer->hidden_dim); // add SA output
 
                 // post-attention RMSNorm
-                load_weight(tensors["post_attention_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim); // load LN2 weights
+                load_weight(tensors["post_attention_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim, g_gpu_weights_buffer); // load LN2 weights
                 launch_rms(buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, sequence_len_q); // LN2(x) → rms_out
 
                 // MLP up-proj
-                proj(tensors["mlp.up_proj.weight"][i],   weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, /*x=*/buffer->rms_out, /*y=*/buffer->MLP_UP,   /*m=*/sequence_len_q, /*n=*/5120, /*k=*/buffer->up_dim); // up-proj
+                proj(tensors["mlp.up_proj.weight"][i],   weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, /*x=*/buffer->rms_out, /*y=*/buffer->MLP_UP,   /*m=*/sequence_len_q, /*n=*/5120, /*k=*/buffer->up_dim, g_gpu_weights_buffer); // up-proj
 
                 // MLP gate-proj
-                proj(tensors["mlp.gate_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, /*x=*/buffer->rms_out, /*y=*/buffer->MLP_GATE, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/buffer->up_dim); // gate-proj
+                proj(tensors["mlp.gate_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, /*x=*/buffer->rms_out, /*y=*/buffer->MLP_GATE, /*m=*/sequence_len_q, /*n=*/5120, /*k=*/buffer->up_dim, g_gpu_weights_buffer); // gate-proj
 
                 // activation on gate
                 launch_act(buffer->MLP_GATE, /*n=*/sequence_len_q * buffer->up_dim); // act(G) in-place
@@ -319,7 +319,7 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
                 launch_elem(buffer->MLP_UP, buffer->MLP_GATE, buffer->MLP_GATE_OUT, /*n=*/sequence_len_q * buffer->up_dim); // U * act(G)
 
                 // MLP down-proj
-                proj(tensors["mlp.down_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, /*x=*/buffer->MLP_GATE_OUT, /*y=*/buffer->MLP_DOWN, /*m=*/sequence_len_q, /*n=*/buffer->up_dim, /*k=*/buffer->hidden_dim); // down-proj
+                proj(tensors["mlp.down_proj.weight"][i], weights, buffer->mlp_up_proj_weights_h, buffer->mlp_up_proj_weights_d, buffer->mlp_up_proj_size, /*x=*/buffer->MLP_GATE_OUT, /*y=*/buffer->MLP_DOWN, /*m=*/sequence_len_q, /*n=*/buffer->up_dim, /*k=*/buffer->hidden_dim, g_gpu_weights_buffer); // down-proj
 
                 // residual add
                 launch_resadd(buffer->embeddings_out, buffer->MLP_DOWN, /*n=*/sequence_len_q * buffer->hidden_dim); // add MLP output
@@ -327,11 +327,11 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             }
 
             // final token RMSNorm
-            load_weight(tensors["norm.weight"][0], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim);                   // γ
+            load_weight(tensors["norm.weight"][0], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim, g_gpu_weights_buffer);                   // γ
             launch_rms(buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, /*seqlen=*/sequence_len_q);            // y = rmsnorm(x)
 
             // load logits matrix and copy first token state
-            load_weight(tensors["logits"][0],     weights, buffer->logits_weights_h, buffer->logits_weights_d, buffer->logtis_shape);             // W_vocab
+            load_weight(tensors["logits"][0],     weights, buffer->logits_weights_h, buffer->logits_weights_d, buffer->logtis_shape, g_gpu_weights_buffer);             // W_vocab
             copy_first_token(buffer->rms_out, buffer->last_x, buffer->hidden_dim);                                                                 // last_x ← rms_out[0]
 
             // logits 

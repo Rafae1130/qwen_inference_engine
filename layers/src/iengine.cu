@@ -18,6 +18,10 @@
 #include <cstdlib>
 
 
+
+
+
+
 batch_metadata* create_new_sequence(
     int sequence_id,
     int* h_token_ids,
@@ -81,6 +85,9 @@ page_table* create_page_list(int pages_required) {
     return head;
 }
 
+
+
+
 // Allocate K/V device buffers for a single node (in elements, not bytes)
 void allocate_page_buffers(page_table* node, size_t elems_per_page) {
     if (!node) return;
@@ -109,9 +116,98 @@ void free_page_list(page_table* head) {
 
 
 
+
+
+
+
+
+// Load all weights to GPU in chunks
+void load_all_weights_to_gpu(const std::vector<tensor>& all_tensors, 
+                              std::ifstream& f, 
+                              __nv_bfloat16* h,
+                              size_t chunk_size, __nv_bfloat16* g_gpu_weights_buffer) {
+    // cudaEvent_t start, stop;
+    // cudaEventCreate(&start);
+    // cudaEventCreate(&stop);
+    // cudaEventRecord(start);
+    
+    // Find total size needed
+    size_t max_offset = 0;
+    for (const auto& t : all_tensors) {
+        if (!t.data_offsets.empty()) {
+            max_offset = std::max(max_offset, t.data_offsets[1]);
+        }
+    }
+    size_t g_total_weights_size = 0;
+    g_total_weights_size = max_offset;
+    
+    // Allocate GPU memory once
+    cudaMalloc(&g_gpu_weights_buffer, g_total_weights_size);
+    
+    // Read and copy in chunks
+    f.clear();
+    f.seekg(0, std::ios::beg);
+    
+    size_t bytes_remaining = g_total_weights_size;
+    size_t current_offset = 0;
+    
+    while (bytes_remaining > 0) {
+        size_t bytes_to_read = std::min(chunk_size, bytes_remaining);
+        
+        // Read chunk to host buffer
+        f.read(reinterpret_cast<char*>(h), static_cast<std::streamsize>(bytes_to_read));
+        
+        if (!f && !f.eof()) {
+            std::cout << "Failed to read weights chunk at offset " << current_offset << "\n";
+            cudaFree(g_gpu_weights_buffer);
+            g_gpu_weights_buffer = nullptr;
+            return;
+        }
+        
+        // Copy chunk to GPU at correct offset
+        cudaMemcpy(reinterpret_cast<char*>(g_gpu_weights_buffer) + current_offset, 
+                   h, 
+                   bytes_to_read, 
+                   cudaMemcpyHostToDevice);
+        
+        current_offset += bytes_to_read;
+        bytes_remaining -= bytes_to_read;
+        
+        std::cout << "Loaded " << current_offset << " / " << g_total_weights_size 
+                  << " bytes (" << (current_offset * 100 / g_total_weights_size) << "%)\n";
+    }
+    
+    // stopCudaTimer(start, stop, "Time to load all weights to GPU", "all_weights");
+    
+    // cudaEventDestroy(start);
+    // cudaEventDestroy(stop);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int main(){
 
     auto tensors = build_indexed_tensors();
+
 
     //opening weights file to read
     std::ifstream weights("/mnt/data/rafaedata/weights.bin", std::ios::binary);
@@ -122,6 +218,19 @@ int main(){
     size_t free_mem = 0;    
     free_mem = printMem(n);
 
+
+    size_t chunk_size = 1ULL * 1024 * 1024 * 1024; // 1GB chunks
+
+    // 2. Allocate host buffer for chunks only
+    __nv_bfloat16* host_buffer = new __nv_bfloat16[chunk_size / sizeof(__nv_bfloat16)];
+
+    // 3. Load all weights in chunks
+    auto tensors_nomap = parsed_tensors();
+
+    __nv_bfloat16* g_gpu_weights_buffer = nullptr;
+
+
+    load_all_weights_to_gpu(tensors_nomap, weights, host_buffer, chunk_size, g_gpu_weights_buffer);
 
 
 
@@ -252,7 +361,7 @@ int main(){
             // cudaEventRecord(start);
 
             std::cout << "going in llm" << std::endl;
-            int out_token_1 = llm(new_seq_1, tensors, weights, kv_cache_seq1, page_size);
+            int out_token_1 = llm(new_seq_1, tensors, weights, kv_cache_seq1, page_size, g_gpu_weights_buffer);
             std::cout << "out-token-1: " << out_token_1 << std::endl;
             new_seq_1->step = new_seq_1->step + 1;
             new_seq_1->generated_token = out_token_1;
@@ -308,6 +417,9 @@ int main(){
         // free(new_seq_2);
         // free(cpu_kcache);
         // free(cpu_vcache);
+
+        delete[] host_buffer;
+        cudaFree(g_gpu_weights_buffer);
 
     }
 
