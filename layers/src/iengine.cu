@@ -74,7 +74,7 @@ page_table* create_page_list(int pages_required) {
     page_table* head = nullptr;
     page_table** cur = &head;
     for (int i = 0; i < pages_required; ++i) {
-        *cur = (page_table*)std::malloc(sizeof(page_table));
+        cudaMallocManaged(cur ,sizeof(page_table));
         if (!*cur) { perror("malloc"); std::abort(); }
         (*cur)->k_page_ptr = nullptr;
         (*cur)->v_page_ptr = nullptr;
@@ -112,96 +112,115 @@ void free_page_list(page_table* head) {
 
 
 
+// Call this with: chunk_bytes = e.g. 1ull<<30;  h_host allocated for >= chunk_bytes.
+// g_gpu_weights_buffer_out will be set to the device base pointer; total_bytes_out tells how many bytes were uploaded.
+bool load_all_weights_to_gpu_chunked(const std::vector<tensor>& all_tensors,
+                                     std::ifstream& f,                 // must be opened as std::ios::binary
+                                     void* h_host,                     // host buffer with size >= chunk_bytes
+                                     size_t chunk_bytes,               // bytes per chunk
+                                     __nv_bfloat16*& g_gpu_weights_buffer_out,  // OUT: device base pointer
+                                     size_t& total_bytes_out)          // OUT: total bytes uploaded
+{
+    g_gpu_weights_buffer_out = nullptr;
+    total_bytes_out = 0;
 
-
-
-
-
-
-
-
-
-// Load all weights to GPU in chunks
-void load_all_weights_to_gpu(const std::vector<tensor>& all_tensors, 
-                              std::ifstream& f, 
-                              __nv_bfloat16* h,
-                              size_t chunk_size, __nv_bfloat16* g_gpu_weights_buffer) {
-    // cudaEvent_t start, stop;
-    // cudaEventCreate(&start);
-    // cudaEventCreate(&stop);
-    // cudaEventRecord(start);
-    
-    // Find total size needed
-    size_t max_offset = 0;
-    for (const auto& t : all_tensors) {
-        if (!t.data_offsets.empty()) {
-            max_offset = std::max(max_offset, t.data_offsets[1]);
-        }
+    // 0) sanity
+    if (!f.is_open()) {
+        std::cerr << "Error: weights file is not open (open with std::ios::binary)\n";
+        return false;
     }
-    size_t g_total_weights_size = 0;
-    g_total_weights_size = max_offset;
-    
-    // Allocate GPU memory once
-    cudaMalloc(&g_gpu_weights_buffer, g_total_weights_size);
-    
-    // Read and copy in chunks
+    if (!h_host || chunk_bytes == 0) {
+        std::cerr << "Error: host buffer null or chunk_bytes == 0\n";
+        return false;
+    }
+
+    // 1) compute the max end offset from tensors (bytes)
+    size_t max_end = 0;
+    for (const auto& t : all_tensors) {
+        if (t.data_offsets.size() >= 2)
+            max_end = std::max(max_end, t.data_offsets[1]);   // end is exclusive
+    }
+    if (max_end == 0) {
+        std::cerr << "No tensor offsets found\n";
+        return false;
+    }
+
+    // 2) determine actual file size safely
+    f.clear();
+    f.seekg(0, std::ios::end);
+    std::ifstream::pos_type endpos = f.tellg();
+    if (endpos == std::ifstream::pos_type(-1)) {
+        std::cerr << "tellg() failed (open with std::ios::binary; ensure stream not in error)\n";
+        return false;
+    }
+    size_t file_size = static_cast<size_t>(endpos);
+
+    size_t total_bytes = std::min(max_end, file_size); // don't read past file
+    if (total_bytes == 0) {
+        std::cerr << "Computed total_bytes==0\n";
+        return false;
+    }
+
+    // 3) allocate device buffer once
+    void* d_base = nullptr;
+    cudaError_t ce = cudaMalloc(&d_base, total_bytes);
+    if (ce != cudaSuccess) {
+        std::cerr << "cudaMalloc(" << total_bytes << ") failed: "
+                  << cudaGetErrorString(ce) << "\n";
+        return false;
+    }
+
+    // 4) chunked read+upload
     f.clear();
     f.seekg(0, std::ios::beg);
-    
-    size_t bytes_remaining = g_total_weights_size;
-    size_t current_offset = 0;
-    
-    while (bytes_remaining > 0) {
-        size_t bytes_to_read = std::min(chunk_size, bytes_remaining);
-        
-        // Read chunk to host buffer
-        f.read(reinterpret_cast<char*>(h), static_cast<std::streamsize>(bytes_to_read));
-        
-        if (!f && !f.eof()) {
-            std::cout << "Failed to read weights chunk at offset " << current_offset << "\n";
-            cudaFree(g_gpu_weights_buffer);
-            g_gpu_weights_buffer = nullptr;
-            return;
-        }
-        
-        // Copy chunk to GPU at correct offset
-        cudaMemcpy(reinterpret_cast<char*>(g_gpu_weights_buffer) + current_offset, 
-                   h, 
-                   bytes_to_read, 
-                   cudaMemcpyHostToDevice);
-        
-        current_offset += bytes_to_read;
-        bytes_remaining -= bytes_to_read;
-        
-        std::cout << "Loaded " << current_offset << " / " << g_total_weights_size 
-                  << " bytes (" << (current_offset * 100 / g_total_weights_size) << "%)\n";
+    if (!f.good()) {
+        std::cerr << "seekg(0) failed\n";
+        cudaFree(d_base);
+        return false;
     }
-    
-    // stopCudaTimer(start, stop, "Time to load all weights to GPU", "all_weights");
-    
-    // cudaEventDestroy(start);
-    // cudaEventDestroy(stop);
+
+    size_t remaining = total_bytes;
+    size_t offset    = 0;
+    int    chunk_idx = 0;
+
+    f.clear();
+    while (remaining > 0) {
+        size_t to_read = std::min(chunk_bytes, remaining);
+        std::cout<< "to_read: " << to_read << " remaining: "<< remaining <<std::endl;
+
+        f.read(static_cast<char*>(h_host), static_cast<std::streamsize>(to_read));
+        std::streamsize got = f.gcount();
+        if (got <= 0) {
+            std::cerr << "read() failed at chunk " << chunk_idx
+                      << " (good=" << f.good() << " eof=" << f.eof()
+                      << " fail=" << f.fail() << " bad=" << f.bad() << ")\n";
+            cudaFree(d_base);
+            return false;
+        }
+
+        ce = cudaMemcpy(static_cast<char*>(d_base) + offset, h_host,
+                        static_cast<size_t>(got), cudaMemcpyHostToDevice);
+        if (ce != cudaSuccess) {
+            std::cerr << "cudaMemcpy H2D failed: " << cudaGetErrorString(ce) << "\n";
+            cudaFree(d_base);
+            return false;
+        }
+
+        offset    += static_cast<size_t>(got);
+        remaining -= static_cast<size_t>(got);
+        ++chunk_idx;
+
+        if (got < static_cast<std::streamsize>(to_read) && remaining > 0) {
+            std::cerr << "Short read before EOF\n";
+            break;
+        }
+    }
+
+    std::cout << "weight read done" << std::endl;
+    g_gpu_weights_buffer_out = (__nv_bfloat16* )d_base;
+    total_bytes_out = offset;
+    return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 int main(){
@@ -210,8 +229,10 @@ int main(){
 
 
     //opening weights file to read
-    std::ifstream weights("/mnt/data/rafaedata/weights.bin", std::ios::binary);
+    std::ifstream weights("/mnt/data/rafae/qwen_weights/weights.bin", std::ios::binary);
     if (!weights) { std::cout << "Failed to open weights.bin\n"; return 1; }
+
+
 
 
     int n=0;
@@ -219,18 +240,45 @@ int main(){
     free_mem = printMem(n);
 
 
-    size_t chunk_size = 1ULL * 1024 * 1024 * 1024; // 1GB chunks
-
-    // 2. Allocate host buffer for chunks only
-    __nv_bfloat16* host_buffer = new __nv_bfloat16[chunk_size / sizeof(__nv_bfloat16)];
 
     // 3. Load all weights in chunks
     auto tensors_nomap = parsed_tensors();
 
-    __nv_bfloat16* g_gpu_weights_buffer = nullptr;
 
 
-    load_all_weights_to_gpu(tensors_nomap, weights, host_buffer, chunk_size, g_gpu_weights_buffer);
+size_t chunk_bytes = 2ull * 1024 * 1024 * 1024 ; // 128 MiB is a safer default for pageable
+void* h_host = std::malloc(chunk_bytes);
+if (!h_host) {
+    std::cerr << "malloc(" << chunk_bytes << ") failed\n";
+    return 1;
+}
+
+
+        //     f.seekg(static_cast<std::streamoff>(0), std::ios::beg);
+        // f.read(static_cast<char*>(h_host), static_cast<std::streamsize>(10);
+
+
+        // std::streamsize got = f.gcount();
+        // if (got <= 0) {
+        //     std::cerr << "read() failed at chunk " 
+        //               << " (good=" << f.good() << " eof=" << f.eof()
+        //               << " fail=" << f.fail() << " bad=" << f.bad() << ")\n";
+        //     return false;
+        // }
+
+
+
+// 3) load
+__nv_bfloat16* g_gpu_weights_buffer = nullptr;
+size_t total_bytes = 0;
+bool ok = load_all_weights_to_gpu_chunked(tensors_nomap, weights,
+                                          h_host, chunk_bytes,
+                                          g_gpu_weights_buffer, total_bytes);
+
+
+
+
+
 
 
 
@@ -278,6 +326,10 @@ int main(){
         int seq_len_1 = sizeof(h_token_ids_1) / sizeof(h_token_ids_1[0]);
         batch_metadata* new_seq_1 = create_new_sequence(0, h_token_ids_1, seq_len_1, tensors, weights);
 
+
+            for(int i = 0; i < 10; i++){
+                std::cout << __bfloat162float(new_seq_1->buffer->embeddings_d[i]) << std::endl;
+            }
         std::cout << "here" << std::endl;
         int page_size = 4;    //page_size should be multiple of 40. i.e. sequence_len_per_page required x 40, so that all layers are in one page.
         // page_table *kv_cache_seq1 = (page_table*)malloc(sizeof(page_table));
@@ -287,6 +339,7 @@ int main(){
         int pages_required = ((seq_len_1 + page_size -1) / page_size) + 1; 
 
 
+        std::cout << "pages_required"<< pages_required << std::endl;
 
         page_table* kv_cache_seq1 = create_page_list(pages_required);
 
@@ -297,14 +350,14 @@ int main(){
             allocate_page_buffers(p, elements_per_page);
         }
 
-        std::cout << "here 3" << std::endl;
+        std::cout << "elements_per_page" <<elements_per_page <<std::endl;
         // cudaMalloc((void **)&kv_cache_seq1->k_page_ptr, page_size * new_seq_1->buffer->number_of_layers*new_seq_1->buffer->number_of_layers*sizeof(__nv_bfloat16));
         // cudaMalloc((void **)&kv_cache_seq1->v_page_ptr, page_size * new_seq_1->buffer->number_of_layers*new_seq_1->buffer->number_of_layers*sizeof(__nv_bfloat16));
         
         // kv_cache_seq1->page_allocated++;
 
-        // new_seq_1->buffer->k_cache = kv_cache_seq1->k_page_ptr;
-        // new_seq_1->buffer->v_cache = kv_cache_seq1->v_page_ptr;
+        new_seq_1->buffer->k_cache = kv_cache_seq1->k_page_ptr;
+        new_seq_1->buffer->v_cache = kv_cache_seq1->v_page_ptr;
 
 
 
@@ -418,7 +471,7 @@ int main(){
         // free(cpu_kcache);
         // free(cpu_vcache);
 
-        delete[] host_buffer;
+        delete[] h_host;
         cudaFree(g_gpu_weights_buffer);
 
     }

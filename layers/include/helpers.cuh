@@ -1,10 +1,9 @@
-// helpers.hpp (included by your .cu)
 #pragma once
 
 #include<cuda_bf16.h>
 #include<cuda.h>
 #include "layers_include.cuh"
-#include "utils.hh"
+// #include "utils.hh"
 #include "iengine.cuh"
 
 static inline dim3 grid2D(int m, int k, int bx=16, int by=16) {
@@ -119,13 +118,15 @@ void launch_matmul( __nv_bfloat16* A,  __nv_bfloat16* B, __nv_bfloat16* C,
     residual_add<<<blocks, threads>>>(x, y, n);
 }
 
-void launch_attn(__nv_bfloat16* Q, __nv_bfloat16* K, __nv_bfloat16* V,
+void launch_attn(__nv_bfloat16* Q,
                                __nv_bfloat16* out, size_t mq, size_t mkv, size_t head_dim,
                                size_t hidden, size_t hidden_kv, int causal, size_t q_abs_base, int layer_id, page_table* kv_cache_seq1, int page_size) {
     int blocks = hidden / head_dim; // nheads
     int threads = head_dim;
     size_t smem = mkv * sizeof(float);
-    selfattention<<<blocks, threads, smem>>>(Q, K, V, out, mq, mkv, head_dim, hidden, hidden_kv, causal, q_abs_base, layer_id, kv_cache_seq1, page_size);
+    selfattention<<<blocks, threads, smem>>>(Q, out, mq, mkv, head_dim, hidden, hidden_kv, causal, q_abs_base, layer_id, kv_cache_seq1, page_size);
+            cudaError_t e = cudaGetLastError(); if (e != cudaSuccess) { fprintf(stderr, "Kernel embedding decode: %s\n", cudaGetErrorString(e)); } cudaDeviceSynchronize();
+
 }
 
  void proj(const tensor& t, std::ifstream& f,

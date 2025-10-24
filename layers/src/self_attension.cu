@@ -3,10 +3,11 @@
 #include <stdio.h>
 
 #include "iengine.cuh"
+
 //the K_matrix and the V_matrix are the KV cache.
 //there needs to be two seq_len, one for Q and another for KV, as Q can be multiple tokens in first 
 //pass but afterwards it will be only one token. But KV caches will keep growing.
-__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, __nv_bfloat16*V_matrix, __nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base, int layer_id, page_table* kv_cache_seq1, int page_size){
+__global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*output, size_t seq_len_q, size_t seq_len_kv, size_t head_dim, size_t hidden_dim, size_t kv_dim, int causal, size_t q_abs_base, int layer_id, page_table* kv_cache_seq1, int page_size){
 
     // int idx = threadIdx.x + blockDim.x*blockIdx.x;
 
@@ -21,7 +22,7 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
             //blockIdx.x*head_dim: each token will have dimension 5120 which is divided into 40 heads, there will be 40 block each handling one head of Q. To move to next head we multiply by head_dim.
             //threadIdx.x: there will be 128 elements in each head, which will be computed in parallel as 128 threads will launched for each block.
             float q_val = __bfloat162float(query_vec[q_tok*hidden_dim + blockIdx.x*head_dim + threadIdx.x]);
-
+            // printf("Reached here");
             //each q_val will remain same for complete k_tok loop. i.e. one q head will be multiplied by all k heads for each block.
             //The K head is multiplied in transpose form but here transpose in memory is not taken just indexing is adjusted.
             //The shape of K is seq_lenx1024 which is then divided into 8 heads hence each head seq_lenx128. Instead of taking its transpose, we just multiply row of q head with row of k head. 
@@ -58,8 +59,7 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
                                     + threadIdx.x ]
             );
 
-
-
+        // printf("Reached here 1");
             buffer[threadIdx.x] = q_val * k_val;
 
             __syncthreads();
@@ -132,6 +132,7 @@ __global__ void selfattention(__nv_bfloat16*query_vec, __nv_bfloat16*K_matrix, _
                 );
 
 
+                        // std::cout << "Reached here3" << std::endl;
 
                 // float v_val = __bfloat162float(page_temp->v_page_ptr[ ((token_id * num_layers + layer_id) * kv_dim)+ head_id * head_dim + threadIdx.x ]);                
                 out_val += score_row[k_tok] * v_val;

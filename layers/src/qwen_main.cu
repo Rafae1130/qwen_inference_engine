@@ -16,7 +16,7 @@
 
 
 
-// #define PRINT_TIME
+#define PRINT_TIME
 
 inline void startCudaTimer(cudaEvent_t &start, cudaEvent_t &stop) {
     cudaEventCreate(&start);
@@ -40,7 +40,25 @@ inline float stopCudaTimer(cudaEvent_t &start, cudaEvent_t &stop, const char* la
 }
 
 
-
+inline void dump_device_bf16(const char* label,
+                             const __nv_bfloat16* d_ptr,
+                             size_t count,
+                             cudaStream_t stream = 0) 
+{
+    std::vector<__nv_bfloat16> h(count);
+    // If you're using streams elsewhere, prefer cudaMemcpyAsync + cudaStreamSynchronize(stream)
+    cudaError_t err = cudaMemcpy(h.data(), d_ptr, count * sizeof(__nv_bfloat16),
+                                 cudaMemcpyDeviceToHost);
+    if (err != cudaSuccess) {
+        std::cerr << "D2H copy failed for " << label << ": "
+                  << cudaGetErrorString(err) << "\n";
+        return;
+    }
+    std::cout << label << " (first " << count << "):\n";
+    for (size_t i = 0; i < count; ++i) {
+        std::cout << "  [" << i << "] " << __bfloat162float(h[i]) << "\n";
+    }
+}
 
 
 int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<tensor>> tensors, std::ifstream &weights, page_table *kv_cache_seq1, int page_size, __nv_bfloat16* g_gpu_weights_buffer){
@@ -64,6 +82,11 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             load_weight(tensors["input_layernorm.weight"][i], weights, buffer->norm_weights_h, buffer->norm_weights_d, buffer->hidden_dim, g_gpu_weights_buffer);
             launch_rms(buffer->embeddings_out, buffer->norm_weights_d, buffer->rms_out, buffer->hidden_dim, buffer->sequence_len);
 
+dump_device_bf16("embeddings_out", buffer->embeddings_out, 10);
+dump_device_bf16("norm_weights_d",  buffer->norm_weights_d, 10);
+
+
+
             //projections - Q
             proj(tensors["self_attn.q_proj.weight"][i], weights,
                 buffer->q_proj_weights_h, buffer->q_proj_weights_d, buffer->q_proj_size,
@@ -76,6 +99,10 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             proj(tensors["self_attn.v_proj.weight"][i], weights,
                 buffer->kv_proj_weights_h, buffer->kv_proj_weights_d, buffer->kv_proj_size,
                 buffer->rms_out, buffer->V, buffer->sequence_len, 5120, 1024, g_gpu_weights_buffer);    // Load v_proj weights (H->D) and compute V = rms_out · W_v  [m=seqlen, n=hidden=5120, k=kv=1024]
+
+
+            dump_device_bf16("buffer->V", buffer->V, 10);
+dump_device_bf16("buffer->K",  buffer->K, 10);
 
             // q_norm
             load_weight(tensors["self_attn.q_norm.weight"][i], weights, buffer->qk_norm_weights_h, buffer->qk_norm_weights_d, buffer->head_dim, g_gpu_weights_buffer);
@@ -96,11 +123,18 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
             // #endif
 
 
+                        dump_device_bf16("kv_cache_seq1->k_page_ptr", kv_cache_seq1->k_page_ptr, 10);
+dump_device_bf16("kv_cache_seq1->v_page_ptr",  kv_cache_seq1->v_page_ptr, 10);
+dump_device_bf16("buffer->Q",  buffer->Q, 10);
+
             //self attention
             #ifdef PRINT_TIME
             startCudaTimer(start, stop);
             #endif
-            launch_attn(buffer->Q, buffer->k_cache, buffer->v_cache, buffer->atten_out, buffer->sequence_len, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim, buffer->hidden_dim_kv, /*causal=*/1, 0, i, kv_cache_seq1, page_size); // self-attention (prefill uses full causal window)
+            launch_attn(buffer->Q, buffer->atten_out, buffer->sequence_len, buffer->sequence_len, buffer->head_dim, buffer->hidden_dim, buffer->hidden_dim_kv, /*causal=*/1, 0, i, kv_cache_seq1, page_size); // self-attention (prefill uses full causal window)
+            cudaError_t e = cudaGetLastError(); if (e != cudaSuccess) { fprintf(stderr, "Kernel embedding decode: %s\n", cudaGetErrorString(e)); return 0; } cudaDeviceSynchronize();
+
+
             #ifdef PRINT_TIME
             stopCudaTimer(start, stop, "Time in attention", i);
             #endif
@@ -289,7 +323,7 @@ int llm(batch_metadata *new_seq , std::unordered_map<std::string, std::vector<te
                 // self‑attention 
                 int q_abs = buffer->sequence_len - 1;
                 // launch_attn(buffer->Q, &buffer->k_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], &buffer->v_cache[i*(buffer->context_size*buffer->hidden_dim_kv)], buffer->atten_out, /*mq=*/sequence_len_q, /*mkv=*/buffer->sequence_len, /*head_dim=*/buffer->head_dim, /*hidden=*/buffer->hidden_dim, /*hidden_kv=*/buffer->hidden_dim_kv, /*causal=*/0, q_abs, i); // SA(Q, Kcache, Vcache) → atten_out
-                launch_attn(buffer->Q, buffer->k_cache, buffer->v_cache, buffer->atten_out, /*mq=*/sequence_len_q, /*mkv=*/buffer->sequence_len, /*head_dim=*/buffer->head_dim, /*hidden=*/buffer->hidden_dim, /*hidden_kv=*/buffer->hidden_dim_kv, /*causal=*/0, q_abs, i, kv_cache_seq1, page_size); // SA(Q, Kcache, Vcache) → atten_out
+                launch_attn(buffer->Q, buffer->atten_out, /*mq=*/sequence_len_q, /*mkv=*/buffer->sequence_len, /*head_dim=*/buffer->head_dim, /*hidden=*/buffer->hidden_dim, /*hidden_kv=*/buffer->hidden_dim_kv, /*causal=*/0, q_abs, i, kv_cache_seq1, page_size); // SA(Q, Kcache, Vcache) → atten_out
 
                 #ifdef PRINT_TIME
                     cudaDeviceSynchronize();
